@@ -10,7 +10,7 @@ class FrontendController extends Controller
 {
     public function __construct($id, $module, $config = [])
     {
-        $this->layout = 'front';
+        $this->layout = 'login';
         $userId = Session::getUserId() ?? null;
 
         if ($userId === null) {

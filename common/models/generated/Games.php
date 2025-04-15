@@ -18,6 +18,7 @@ use Yii;
  * @property int|null $public
  * @property string|null $url
  * @property int|null $time
+ * @property string|null $text
  *
  * @property GameToUser[] $gameToUsers
  * @property QuestGameToUser[] $questGameToUsers
@@ -43,6 +44,7 @@ class Games extends \yii\db\ActiveRecord
             [['name', 'created_at', 'updated_at'], 'required'],
             [['game_type', 'question_type', 'is_paid', 'price', 'public', 'time'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
+            [['text'], 'string'],
             [['name', 'url'], 'string', 'max' => 255],
             [['name'], 'unique'],
         ];
@@ -65,6 +67,7 @@ class Games extends \yii\db\ActiveRecord
             'public' => 'Public',
             'url' => 'Url',
             'time' => 'Time',
+            'text' => 'Text',
         ];
     }
 

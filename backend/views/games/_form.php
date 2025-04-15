@@ -31,6 +31,8 @@ use yii\widgets\ActiveForm;
         <?= $form->field($model, 'time')->textInput() ?>
     <?php endif;?>
 
+
+    <?= $form->field($model, 'text')->textarea() ?>
     <div class="form-group">
         <?= Html::submitButton('Сохранить игру', ['class' => 'btn btn-success']) ?>
     </div>

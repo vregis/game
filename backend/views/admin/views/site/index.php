@@ -11,7 +11,7 @@ $this->params['breadcrumbs'] = [['label' => $this->title]];
             ]) ?>
             <?= \hail812\adminlte\widgets\Callout::widget([
                 'type' => 'danger',
-                'head' => 'I am a danger callout!',
+                'head' => '1I am a danger callout!',
                 'body' => 'There is a problem that we need to fix. A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart.'
             ]) ?>
         </div>
