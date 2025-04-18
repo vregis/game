@@ -2,7 +2,7 @@
 <div style="margin-bottom:20px;" class="container-fluid">
     <div class="row">
         <div style="margin-bottom:10px" class="col-lg-2 col-md-12 col-sm-12">
-            <a onclick="return confirm('Вы точно хотите пропустить тур?')" class="btn btn-danger col-lg-12 col-md-12 col-sm-12 end-tour" href="<?php echo \yii\helpers\Url::to(['/quest/end-tour', 'id' => $tour->id])?>" data-tour-id="<?php echo $tour->id?>">Пропустить тур</a>
+            <a style="display:none" onclick="return confirm('Вы точно хотите пропустить тур?')" class="btn btn-danger col-lg-12 col-md-12 col-sm-12 end-tour" href="<?php echo \yii\helpers\Url::to(['/quest/end-tour', 'id' => $tour->id])?>" data-tour-id="<?php echo $tour->id?>">Пропустить тур</a>
         </div>
     </div>
 </div>
