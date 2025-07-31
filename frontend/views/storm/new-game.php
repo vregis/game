@@ -1,4 +1,7 @@
 <p>Добро пожаловать в игру '<?php echo $game->name?>'</p>
+<p>
+    <?php echo $game->text?>
+</p>
 <button data-id = <?php echo $game->id?> data-url="<?php echo \yii\helpers\Url::to(['/storm/game-start'])?>" class="btn btn-success game-start">
     Начать игру
 </button>

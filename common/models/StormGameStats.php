@@ -154,4 +154,31 @@ class StormGameStats extends \common\models\generated\StormGameStats
 
         \Yii::$app->getDb()->createCommand('UPDATE `storm_game_to_user` SET created_at = DATE_ADD(created_at, INTERVAL '.$bonus.' second) WHERE id = '.$gameId.' AND user_id = '.$userId)->execute();
     }
+
+    public static function isGameEnd(): bool
+    {
+        $gameId = Session::getByKey(Session::CURRENT_GAME_ID);
+        $game = StormGameToUser::getRealGameId($gameId);
+
+        if (!$game) {
+            return false;
+        }
+
+        $tourList = Tours::getToursByGameId($game->game_id);
+
+        if (!$tourList) {
+            return false;
+        }
+
+        foreach ($tourList as $tour) {
+            $stat = self::getCurrentStat($tour->id);
+            $count = Questions::getQuestionByTourCount($_POST['tour_id']);
+            if ($count != count($stat)) {
+                return false;
+            }
+        }
+
+        return true;
+
+    }
 }

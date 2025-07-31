@@ -19,7 +19,7 @@
     </div>
 </div>
 <div class="col-12"><h3>Осталось: <span class="rem-time"></span> секунд</h3></div>
-<div class="update-stat" data-url="<?php echo \yii\helpers\Url::to(['/storm/update-stat'])?>" data-end-url="<?php echo \yii\helpers\Url::to(['/storm/game-end'])?>"></div>
+<div class="update-stat"  data-url="<?php echo \yii\helpers\Url::to(['/storm/update-stat'])?>" data-end-url="<?php echo \yii\helpers\Url::to(['/storm/game-end'])?>" data-prompt-url="<?php echo \yii\helpers\Url::to(['/storm/prompts'])?>"></div>
 <div style="margin-bottom:20px;" class="container-fluid">
     <div class="row">
         <div style="margin-bottom:10px" class="col-lg-4 col-md-12 col-sm-12">
@@ -71,6 +71,14 @@
                                         </video>
                                     </div>
                                 <?php endif;?>
+                            <?php endforeach;?>
+                        <?php endif;?>
+                        <?php $prompts = \common\models\Prompts::find()->where(['question_id' => $q->id])->all(); ?>
+                        <?php if ($prompts):?>
+                            <?php foreach ($prompts as $p):?>
+                                <div style="margin-top:20px; font-size:12px" class="prompts">
+                                    Подсказка: <span class="time-prompt-<?php echo $p->id?>"></span><span style="display: none" class="prompt-<?php echo $p->id?>"><?php echo $p->text?></span>
+                                </div>
                             <?php endforeach;?>
                         <?php endif;?>
                     </div>
@@ -125,6 +133,26 @@ $this->registerJs("
                     for (key in msg.questions) {
                         $('.correct-answer-id-'+key).find('span').text(msg.questions[key]);
                         $('.correct-answer-id-'+key).show();
+                    }
+                }
+                       
+        })
+        
+        $.ajax({
+                type: 'POST',
+                data:{tour_id: $('.send-answer').attr('data-tour-id')},
+                url: $('.update-stat').attr('data-prompt-url'),
+                dataType: 'json',
+                success: function(msg){
+                    for (key in msg.prompts) {
+                        if (msg.prompts[key]['time'] == 0) {
+                            $('.prompt-' + key).show();
+                            $('.time-prompt-' + key).hide();
+                        } else {
+                        $('.prompt-' + key).hide();
+                        $('.time-prompt-' + key).html(msg.prompts[key]['time']);
+                        $('.time-prompt-' + key).show();
+                        }
                     }
                 }
                        

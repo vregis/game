@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use common\models\Answers;
 use common\models\Games;
 use common\models\helpers\Session;
+use common\models\Prompts;
 use common\models\QuestGameStats;
 use common\models\QuestGameTour;
 use common\models\QuestGameToUser;
@@ -131,7 +132,8 @@ class StormController extends FrontendController
 
         $count = Questions::getQuestionByTourCount($_POST['tour_id']);
 
-        if ($count === count($stat)) {
+       // if ($count === count($stat)) {
+        if (StormGameStats::isGameEnd()) {
             $isEnd = 1;
         }
 
@@ -152,5 +154,28 @@ class StormController extends FrontendController
         $correctAnswers = StormGameStats::getCorrectAnswers();
 
         return $this->render('end-game', ['tourList' => $tourList, 'correctAnswers' => $correctAnswers]);
+    }
+
+    public function actionPrompts()
+    {
+        $gameId = Session::getByKey(Session::CURRENT_GAME_ID);
+        $start = StormGameToUser::getRealGameId($gameId);
+        $promts = Prompts::find()->all();
+        $response = [];
+
+        if($promts) {
+            foreach ($promts as $prompt) {
+                $pTime = time() - strtotime($start->created_at);
+                $time = $prompt->time - $pTime;
+                if ($time < 0) {
+                    $time = 0;
+                }
+                $response['prompts'][$prompt->id]['time'] = $time;
+            }
+        }
+
+        return json_encode($response);
+
+
     }
 }
