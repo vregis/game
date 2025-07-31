@@ -64,3 +64,5 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 </div>
+
+<!--<a href = '/backend/web/site/generate-users'>Генерировать пользователей</a> -->

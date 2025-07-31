@@ -6,6 +6,7 @@ use common\models\Answers;
 use common\models\helpers\UploadFileHelper;
 use common\models\Questions;
 use common\models\QuestionsAttachments;
+use common\models\Tours;
 use Throwable;
 use yii\data\ActiveDataProvider;
 use yii\db\Exception;
@@ -58,10 +59,12 @@ class QuestionsController extends BackendController
             ],
             */
         ]);
+        $gameId = Tours::findOne($id)->game_id;
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'id' => $id,
+            'gameId' => $gameId,
         ]);
     }
 
@@ -113,7 +116,7 @@ class QuestionsController extends BackendController
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(Url::to(['questions/index', 'id' => $model->tour_id]));
+            return $this->redirect(Url::to(['questions/update', 'id' => $model->id]));
         }
 
         return $this->render('update', [
@@ -130,9 +133,11 @@ class QuestionsController extends BackendController
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $tourId = $model->tour_id;
+        $model->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['index', 'id' => $tourId]);
     }
 
     /**

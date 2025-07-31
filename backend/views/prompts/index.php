@@ -25,12 +25,17 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
             'name',
             'number',
             'question_id',
-            'text',
+            [
+                'attribute'=>'text',
+                'format' => 'raw',
+                'class' => 'yii\grid\DataColumn', // can be omitted, as it is the default
+                'value' => function ($data) {
+                    return strip_tags($data->text);
+                },
+            ],
             //'created_at',
             //'updated_at',
             [

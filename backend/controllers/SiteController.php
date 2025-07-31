@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\models\helpers\UserGenerator;
 use common\models\LoginForm;
 use Yii;
 use yii\filters\VerbFilter;
@@ -29,7 +30,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout', 'index', 'generate-users'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -104,5 +105,10 @@ class SiteController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
+    }
+
+    public function actionGenerateUsers()
+    {
+        UserGenerator::gen();
     }
 }

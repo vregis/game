@@ -135,7 +135,7 @@
         <span>Vault-Tec Authentication System</span>
     </div>
 
-    <?php $model = \common\models\Games::getGameById(9)?>
+    <?php $model = \common\models\Games::getGameById(11)?>
 
     <?php echo $model->text?>
     <button onclick="location.href = 'http://<?php echo $_SERVER['HTTP_HOST']?>/frontend/web/<?php echo $model->getGameTypeFrontUrl()?>/new-game?id=<?php echo $model->url?>'" class="btn btn-pip">Начать</button>

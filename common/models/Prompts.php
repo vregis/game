@@ -23,7 +23,7 @@ class Prompts extends generated\Prompts
     public function rules()
     {
         return [
-            [['number', 'question_id'], 'integer'],
+            [['number', 'question_id', 'time'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['name', 'text'], 'string', 'max' => 255],
             [['question_id'], 'exist', 'skipOnError' => true, 'targetClass' => Questions::class, 'targetAttribute' => ['question_id' => 'id']],

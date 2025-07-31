@@ -15,6 +15,7 @@ class Tours extends generated\Tours
             [['name', 'number'], 'required'],
             ['number', 'isNumberExist'],
             [['number', 'game_id', 'type', 'is_perforate', 'bonus'], 'integer'],
+            [['text'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
             [['name', 'time'], 'string', 'max' => 255],
             [['game_id'], 'exist', 'skipOnError' => true, 'targetClass' => Games::class, 'targetAttribute' => ['game_id' => 'id']],

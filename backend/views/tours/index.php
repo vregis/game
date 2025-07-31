@@ -10,6 +10,7 @@ use yii\grid\GridView;
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = 'Tours';
+$this->params['breadcrumbs'][] = ['label' => 'Игры', 'url' => ['games/index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="tours-index">

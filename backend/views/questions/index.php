@@ -10,6 +10,7 @@ use yii\grid\GridView;
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = 'Questions';
+$this->params['breadcrumbs'][] = ['label' => 'Туры', 'url' => ['tours/index', 'id' => $gameId]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="questions-index">
@@ -25,9 +26,16 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'text',
+            [
+                'attribute'=>'text',
+                'format' => 'raw',
+                'class' => 'yii\grid\DataColumn', // can be omitted, as it is the default
+                'value' => function ($data) {
+                    return strip_tags($data->text);
+                },
+            ],
             'tour_id',
+            'bonus',
             'number',
           //  'created_at',
             //'updated_at',

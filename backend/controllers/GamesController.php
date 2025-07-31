@@ -88,7 +88,7 @@ class GamesController extends BackendController
             $model->loadDefaultValues();
         }
 
-        var_dump($model->getErrors());
+       // var_dump($model->getErrors());
 
         return $this->render('create', [
             'model' => $model,

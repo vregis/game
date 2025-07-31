@@ -17,6 +17,7 @@ use Yii;
  * @property string $updated_at
  * @property string|null $time
  * @property int|null $bonus
+ * @property string|null $text
  *
  * @property Games $game
  * @property Questions[] $questions
@@ -40,6 +41,7 @@ class Tours extends \yii\db\ActiveRecord
             [['name', 'created_at', 'updated_at'], 'required'],
             [['number', 'game_id', 'type', 'is_perforate', 'bonus'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
+            [['text'], 'string'],
             [['name', 'time'], 'string', 'max' => 255],
             [['game_id'], 'exist', 'skipOnError' => true, 'targetClass' => Games::class, 'targetAttribute' => ['game_id' => 'id']],
         ];
@@ -61,6 +63,7 @@ class Tours extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
             'time' => 'Time',
             'bonus' => 'Bonus',
+            'text' => 'Text',
         ];
     }
 

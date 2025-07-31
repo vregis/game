@@ -94,6 +94,7 @@ class TeamController extends FrontendController
 
         if ($this->request->isPost) {
             $model->creator_id = Session::getUserId();
+            $model->captain_id = Session::getUserId();
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
@@ -135,6 +136,7 @@ class TeamController extends FrontendController
      */
     public function actionDelete($id)
     {
+
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
@@ -234,7 +236,7 @@ class TeamController extends FrontendController
             return json_encode($response);
         }
 
-        if (TeamToUser::deleteAll(['id' => $_POST['id']])) {
+        if (Team::deleteCurrentUserFromTeam($_POST['id'])) {
             $response['msg'] = 'Вы покинули команду';
             return json_encode($response);
         }

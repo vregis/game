@@ -13,7 +13,45 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'text')->textarea(['maxlength' => true]) ?>
+    <?php
+    echo $form->field($model, 'text')
+        ->widget(
+            \Itstructure\CKEditor\CKEditor::className(),
+            [
+                'preset' => 'custom',
+                'clientOptions' => [
+                    'toolbarGroups' => [
+                        [
+                            'name' => 'undo'
+                        ],
+                        [
+                            'name' => 'basicstyles',
+                            'groups' => ['basicstyles', 'cleanup']
+                        ],
+                        [
+                            'name' => 'colors'
+                        ],
+                        [
+                            'name' => 'links',
+                            'groups' => ['links', 'insert']
+                        ],
+                        [
+                            'name' => 'others',
+                            'groups' => ['others', 'about']
+                        ],
+                    ],
+                    'filebrowserBrowseUrl' => '/ckfinder/ckfinder.html',
+                    'filebrowserImageBrowseUrl' => '/ckfinder/ckfinder.html?type=Images',
+                    'filebrowserUploadUrl' => '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+                    'filebrowserImageUploadUrl' => '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+                    'filebrowserWindowWidth' => '1000',
+                    'filebrowserWindowHeight' => '700',
+                    'allowedContent' => true,
+                    'language' => 'en',
+                ]
+            ]
+        );
+    ?>
 
     <?= $form->field($model, 'tour_id')->hiddenInput(['value' => $id])->label(false) ?>
     <?= $form->field($model, 'number')->textInput(['type' => 'number']) ?>

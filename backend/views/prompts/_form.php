@@ -20,7 +20,45 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'time')->textInput(['type' => 'number']) ?>
 
-    <?= $form->field($model, 'text')->textarea(['maxlength' => true]) ?>
+    <?php
+    echo $form->field($model, 'text')
+        ->widget(
+            \Itstructure\CKEditor\CKEditor::className(),
+            [
+                'preset' => 'custom',
+                'clientOptions' => [
+                    'toolbarGroups' => [
+                        [
+                            'name' => 'undo'
+                        ],
+                        [
+                            'name' => 'basicstyles',
+                            'groups' => ['basicstyles', 'cleanup']
+                        ],
+                        [
+                            'name' => 'colors'
+                        ],
+                        [
+                            'name' => 'links',
+                            'groups' => ['links', 'insert']
+                        ],
+                        [
+                            'name' => 'others',
+                            'groups' => ['others', 'about']
+                        ],
+                    ],
+                    'filebrowserBrowseUrl' => '/ckfinder/ckfinder.html',
+                    'filebrowserImageBrowseUrl' => '/ckfinder/ckfinder.html?type=Images',
+                    'filebrowserUploadUrl' => '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+                    'filebrowserImageUploadUrl' => '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+                    'filebrowserWindowWidth' => '1000',
+                    'filebrowserWindowHeight' => '700',
+                    'allowedContent' => true,
+                    'language' => 'en',
+                ]
+            ]
+        );
+    ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
@@ -55,53 +93,7 @@ use yii\widgets\ActiveForm;
         </div>
     </div>
     <hr>
-    <h2>Аудио</h2>
-    <input type="file" id="audio-upload" value="Добавить аудио">
-    <div class='audio-url'
-         data-url = '<?php echo \yii\helpers\Url::to(['/prompts/add-audio'])?>'
-         data-id = '<?php echo $model->id?>'>
-    </div>
-    <div class="row" style="margin-top:20px">
-        <?php $audio = \common\models\PromptsAttachments::getAttachments($model->id, \common\models\helpers\UploadFileHelper::ATTACHMENT_AUDIO_ID)?>
 
-        <?php if ($audio):?>
-            <?php foreach ($audio as $a):?>
-                <div>
-                    <audio controls>
-                        <source src="/uploads/prompts/<?=\common\models\helpers\UploadFileHelper::ATTACHMENT_AUDIO?>/<?=$model->id?>/<?=$a->url?>" type="audio/mpeg">
-                        Your browser does not support the audio element.
-                    </audio>
-                    <div class="delete-image" data-url="<?php echo \yii\helpers\Url::to(['/prompts/delete-image'])?>" data-id="<?=$a->id?>" style="text-align: center; margin-top: 5px; margin-bottom: 5px; cursor:pointer">Удалить</div>
-                </div>
-
-
-            <?php endforeach;?>
-        <?php endif;?>
-    </div>
-    <hr>
-
-    <h2>Видео</h2>
-    <input type="file" id="video-upload" value="Добавить видео">
-    <div class='video-url'
-         data-url = '<?php echo \yii\helpers\Url::to(['/prompts/add-video'])?>'
-         data-id = '<?php echo $model->id?>'>
-    </div>
-    <div class="row" style="margin-top:20px">
-        <?php $video = \common\models\PromptsAttachments::getAttachments($model->id, \common\models\helpers\UploadFileHelper::ATTACHMENT_VIDEO_ID)?>
-
-        <?php if ($video):?>
-            <?php foreach ($video as $v):?>
-                <div class="col-sm-12">
-                    <video width="320" height="240" controls>
-                        <source src="/uploads/prompts/<?=\common\models\helpers\UploadFileHelper::ATTACHMENT_VIDEO?>/<?=$model->id?>/<?=$v->url?>" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                    <div class="delete-image" data-url="<?php echo \yii\helpers\Url::to(['/prompts/delete-image'])?>" data-id="<?=$v->id?>" style="margin-left:7%; text-align: left; margin-top: 5px; margin-bottom: 5px; cursor:pointer">Удалить</div>
-                </div>
-
-            <?php endforeach;?>
-        <?php endif;?>
-    </div>
     <?php
     $this->registerJs("
     $('.delete-image').click(function(){

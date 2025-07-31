@@ -5,9 +5,11 @@ namespace backend\controllers;
 use common\models\helpers\UploadFileHelper;
 use common\models\Prompts;
 use common\models\PromptsAttachments;
+use common\models\Questions;
 use yii\data\ActiveDataProvider;
 use yii\db\Exception;
 use yii\db\StaleObjectException;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -86,7 +88,8 @@ class PromptsController extends BackendController
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                $q = Questions::getQuestionById($model->question_id);
+                return $this->redirect(Url::to(['questions/index', 'id' => $q->tour_id]));
             }
         } else {
             $model->loadDefaultValues();
@@ -109,11 +112,13 @@ class PromptsController extends BackendController
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            $q = Questions::getQuestionById($model->question_id);
+            return $this->redirect(Url::to(['questions/index', 'id' => $q->tour_id]));
         }
 
         return $this->render('update', [
             'model' => $model,
+            'id' => $model->question_id,
         ]);
     }
 
@@ -126,9 +131,11 @@ class PromptsController extends BackendController
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $q = $model->question_id;
+        $model->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['index', 'id' => $q]);
     }
 
     /**

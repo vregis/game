@@ -4,20 +4,19 @@ namespace frontend\controllers;
 
 use common\models\Answers;
 use common\models\Games;
-use common\models\GameToUser;
 use common\models\helpers\Session;
 use common\models\helpers\TimeConverter;
 use common\models\Prompts;
-use common\models\QuestGameStats;
-use common\models\QuestGameTour;
-use common\models\QuestGameToUser;
+use common\models\QuestGameTeamStats;
+use common\models\QuestGameTeamTour;
+use common\models\QuestGameTeamToUser;
 use common\models\Questions;
 use common\models\Tours;
 use yii\filters\AccessControl;
 use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 
-class QuestController extends FrontendController
+class QuestTeamController extends FrontendController
 {
 
     public function behaviors()
@@ -56,11 +55,10 @@ class QuestController extends FrontendController
             return json_encode($response);
         }
 
-        QuestGameToUser::startGame($game->id);
-
+        QuestGameTeamToUser::startGame($game->id);
 
         $response['success'] = true;
-        $response['url'] = Url::to(['/quest/new-tour', 'id' => $tour->id]);
+        $response['url'] = Url::to(['/quest-team/new-tour', 'id' => $tour->id]);
 
         return json_encode($response);
 
@@ -72,6 +70,12 @@ class QuestController extends FrontendController
 
         if (!$game) {
             throw new NotFoundHttpException('Игры не существует');
+        }
+
+        if ($game = QuestGameTeamTour::isGameExist()) {
+            $session = Yii::$app->session;
+            $session->set(Session::CURRENT_GAME_ID, $game->game_id);
+            //redirect to needed tour
         }
 
         return $this->render('new-game', ['game' => $game]);
@@ -102,10 +106,10 @@ class QuestController extends FrontendController
             return json_encode($response);
         }
 
-        QuestGameTour::tourStart($tour->id);
+        QuestGameTeamTour::tourStart($tour->id);
 
         $response['success'] = true;
-        $response['url'] = Url::to(['/quest/tour', 'id' => $tour->id]);
+        $response['url'] = Url::to(['/quest-team/tour', 'id' => $tour->id]);
 
         return json_encode($response);
     }
@@ -137,7 +141,7 @@ class QuestController extends FrontendController
 
         $answers = Answers::getAnswerByTourId($_POST['tour_id'], $_POST['answer']);
 
-        QuestGameStats::updateStats($_POST['tour_id'], $_POST['answer'], $answers);
+        QuestGameTeamStats::updateStats($_POST['tour_id'], $_POST['answer'], $answers);
 
         $response['success'] = true;
 
@@ -159,7 +163,7 @@ class QuestController extends FrontendController
             return json_encode($response);
         }
 
-        $stat = QuestGameStats::getCurrentStat($_POST['tour_id']);
+        $stat = QuestGameTeamStats::getCurrentStat($_POST['tour_id']);
         $answeredQuestions = [];
 
         if ($stat){
@@ -168,7 +172,7 @@ class QuestController extends FrontendController
             }
         }
 
-        $timeEnd = QuestGameTour::getRemainingTime($_POST['tour_id']);
+        $timeEnd = QuestGameTeamTour::getRemainingTime($_POST['tour_id']);
 
         $isEnd = $timeEnd == 0 ?  1 :  0;
 
@@ -190,15 +194,15 @@ class QuestController extends FrontendController
     public function actionEndTour(int $id)
     {
         $count = Questions::getQuestionByTourCount($id);
-        $stat = QuestGameStats::getCurrentStat($id);
+        $stat = QuestGameTeamStats::getCurrentStat($id);
         $tour = Tours::getTourById($id);
-        QuestGameTour::tourEnd($id);
+        QuestGameTeamTour::tourEnd($id);
 
         if (!$stat || count($stat) < $count) {
            // $this->redirect(['/quest/tour', 'id' => $id]);
         }
 
-        $allStat = QuestGameStats::getAllStats($id);
+        $allStat = QuestGameTeamStats::getAllStats($id);
         $nextTour = Tours::getNextTour($tour->game_id, $tour->number);
 
         return $this->render('end-tour', ['allStat' => $allStat, 'nextTour' => $nextTour]);
@@ -207,16 +211,16 @@ class QuestController extends FrontendController
     public function actionGameStat()
     {
         $gameId = Session::getByKey(Session::CURRENT_GAME_ID);
-        $realGameId = QuestGameToUser::getRealGameId($gameId);
+        $realGameId = QuestGameTeamToUser::getRealGameId($gameId);
         $tourList = Tours::getToursByGameId($realGameId->game_id);
-        $correctAnswers = QuestGameStats::getCorrectAnswers();
+        $correctAnswers = QuestGameTeamStats::getCorrectAnswers();
 
         return $this->render('end-game', ['tourList' => $tourList, 'correctAnswers' => $correctAnswers]);
     }
 
     public function actionPrompts()
     {
-        $start = QuestGameTour::getCurrentTour($_POST['tour_id']);
+        $start = QuestGameTeamTour::getCurrentTour($_POST['tour_id']);
         $promts = Prompts::find()->all();
         $response = [];
 

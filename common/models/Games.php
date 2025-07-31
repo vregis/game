@@ -98,8 +98,10 @@ class Games extends generated\Games
 
         if ($this->question_type == 1) {
             $url = 'site';
-        } elseif ($this->question_type == 3) {
+        } elseif ($this->question_type == 3 && $this->game_type == 1) {
             $url = 'quest';
+        } elseif ($this->question_type == 3 && $this->game_type == 2) {
+            $url = 'quest-team';
         } elseif ($this->question_type == 2) {
             $url = 'storm';
         }

@@ -9,15 +9,14 @@ use yii\grid\GridView;
 /** @var yii\web\View $this */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Teams';
+$this->title = 'Команды';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="team-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Team', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Создать команду', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
 

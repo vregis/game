@@ -20,4 +20,9 @@ class TeamToUser extends generated\TeamToUser
             ],
         ];
     }
+
+    public static function getTeamFromUser($userId)
+    {
+        return self::findOne(['user_id' => $userId])->team_id;
+    }
 }

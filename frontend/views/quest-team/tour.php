@@ -2,19 +2,19 @@
 <div style="margin-bottom:20px;" class="container-fluid">
     <div class="row">
         <div style="margin-bottom:10px" class="col-lg-2 col-md-12 col-sm-12">
-            <a style="" onclick="return confirm('Вы точно хотите пропустить тур?')" class="btn btn-danger col-lg-12 col-md-12 col-sm-12 end-tour" href="<?php echo \yii\helpers\Url::to(['/quest/end-tour', 'id' => $tour->id])?>" data-tour-id="<?php echo $tour->id?>">Пропустить тур</a>
+            <a style="" onclick="return confirm('Вы точно хотите пропустить тур?')" class="btn btn-danger col-lg-12 col-md-12 col-sm-12 end-tour" href="<?php echo \yii\helpers\Url::to(['/quest-team/end-tour', 'id' => $tour->id])?>" data-tour-id="<?php echo $tour->id?>">Пропустить тур</a>
         </div>
     </div>
 </div>
 <div class="col-12"><h3>Осталось: <span class="rem-time"></span> секунд</h3></div>
-<div class="update-stat" data-end-url="<?php echo \yii\helpers\Url::to(['/quest/end-tour', 'id' => $tour->id])?>" data-url="<?php echo \yii\helpers\Url::to(['/quest/update-stat'])?>" data-prompt-url="<?php echo \yii\helpers\Url::to(['/quest/prompts'])?>"></div>
+<div class="update-stat" data-end-url="<?php echo \yii\helpers\Url::to(['/quest-team/end-tour', 'id' => $tour->id])?>" data-url="<?php echo \yii\helpers\Url::to(['/quest-team/update-stat'])?>" data-prompt-url="<?php echo \yii\helpers\Url::to(['/quest-team/prompts'])?>"></div>
 <div style="margin-bottom:20px;" class="container-fluid">
     <div class="row">
         <div style="margin-bottom:10px" class="col-lg-4 col-md-12 col-sm-12">
             <input class="form-control answer" type="text">
         </div>
         <div style="margin-bottom:10px" class="col-lg-2 col-md-12 col-sm-12">
-            <button class="btn btn-success col-lg-12 col-md-12 col-sm-12 send-answer" data-url="<?php echo \yii\helpers\Url::to(['/quest/send-answer'])?>" data-tour-id="<?php echo $tour->id?>">Ответ</button>
+            <button class="btn btn-success col-lg-12 col-md-12 col-sm-12 send-answer" data-url="<?php echo \yii\helpers\Url::to(['/quest-team/send-answer'])?>" data-tour-id="<?php echo $tour->id?>">Ответ</button>
         </div>
         <div style="margin-bottom:10px" class="col-lg-4 col-md-12 col-sm-12">
             <div style="color:green; display:none; margin-top:4px" class="correct-answer">Верно</div>
