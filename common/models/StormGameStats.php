@@ -196,18 +196,18 @@ class StormGameStats extends \common\models\generated\StormGameStats
         foreach ($tours as $tour) {
             $allQuestions = Questions::getQuestionByTourCount($tour->id);
             $ansQuestions = self::answeredQuestionsByTourCount($gameId, $userId, $tour->id);
-            if ($allQuestions != $ansQuestions && (time() - strtotime($game->start_at) <= $tour->time or $tour->time === null)) {
+            if ($allQuestions != $ansQuestions && (time() - strtotime($game->start_at) <= $tour->time or $tour->time === null or $tour->time == "")) {
                 $enabledTours[] = $tour->id;
             }
         }
 
         if (!$enabledTours) {
-            if ($withEnd) {
+            //if ($withEnd) {
                 $game::endGame($gameId, $userId);
                 \Yii::$app->response->redirect(['storm/game-end'])->send();
                 die();
-            }
-            return 0;
+        //    }
+          //  return 0;
         } else {
             return min($enabledTours);
         }

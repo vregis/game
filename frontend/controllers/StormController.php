@@ -154,7 +154,7 @@ class StormController extends FrontendController
                 StormGameStats::updateRemainingTimeTour($_POST['tour_id']);
                 $switchTour = StormGameStats::switchTour();
 
-            }elseif(time() - strtotime($gameToUser->start_at) > $tour->time && $tour->time !== null) {
+            }elseif(time() - strtotime($gameToUser->start_at) > $tour->time && $tour->time !== null && $tour->time !== '') {
                 $switchTour = StormGameStats::switchTour(true);
             }
         }
