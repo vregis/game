@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /** @var common\models\Tours $model */
 
 $this->title = 'Update Tours: ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Туры', 'url' => ['index', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => 'Туры', 'url' => ['index', 'id' => $model->game_id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="tours-update">
