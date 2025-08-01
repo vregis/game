@@ -1,4 +1,4 @@
-<h1>Тур №<?php echo $tour->number?></h1>
+<h1><?php echo $tour->name?></h1>
 <?php if (isset($tour->text)):?>
     <h2><?php echo $tour->text?></h2>
 <?php endif;?>
