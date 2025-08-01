@@ -14,7 +14,7 @@ $this->title = 'Личный кабинет';
     <div class="body-content">
 
         <div class="row">
-            <?php if (Yii::$app->user->id === 16): ?>
+            <?php if (Yii::$app->user->id === 16 or Yii::$app->user->id === 9 or Yii::$app->user->id === 12 or Yii::$app->user->id === 13): ?>
             <h1><a href="/frontend/web/storm/new-game?id=onboeq1754074542xswN8j">Начать игру</a></h1>
             <?php endif;?>
         </div>
