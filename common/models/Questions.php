@@ -32,7 +32,7 @@ class Questions extends generated\Questions
     public function rules(): array
     {
         return [
-            [['text'], 'required'],
+          //  [['text'], 'required'],
             [['tour_id', 'type', 'time', 'number', 'bonus'], 'integer'],
             ['number', 'isNumberExist'],
             [['created_at', 'updated_at'], 'safe'],

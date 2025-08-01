@@ -1,10 +1,15 @@
-
 <table class="table table-bordered">
     <thead>
     <th style="width:20%">Название команды</th>
     <th style="width:20%">Время</th>
     </thead>
     <tbody>
+    <?php usort($gameResults, function ($x, $y) {
+        $diffX = strtotime($x->start_at) - strtotime($x->end_at);
+        $diffY = strtotime($y->start_at) - strtotime($y->end_at);
+
+        return $diffY <=> $diffX;
+    }) ?>
     <?php foreach ($gameResults as $gameResult):?>
         <tr>
             <td><?php echo $gameResult->userName?></td>
