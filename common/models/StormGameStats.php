@@ -11,6 +11,8 @@ class StormGameStats extends \common\models\generated\StormGameStats
 
     const DEFAULT_BONUS_TIME = 0;
 
+    public $qBonus;
+
     public function behaviors()
     {
         return [
@@ -242,5 +244,26 @@ class StormGameStats extends \common\models\generated\StormGameStats
         }
 
         \Yii::$app->getDb()->createCommand('UPDATE `storm_game_to_user` SET created_at = DATE_ADD(created_at, INTERVAL '.$bonus.' second) WHERE id = '.$gameId.' AND user_id = '.$userId)->execute();
+    }
+
+    public static function getBonusTime($gameId, $userId)
+    {
+
+        $q = self::find()->select('storm_game_stats.*, questions.bonus as qBonus')
+            ->join('LEFT JOIN', 'questions', 'questions.id = storm_game_stats.question_id')
+            ->where(['storm_game_stats.game_id' => $gameId, 'storm_game_stats.user_id' => $userId, 'storm_game_stats.is_correct' => true])
+            ->all();
+
+
+        $bonus = 0;
+        if (!$q) {
+            return $bonus;
+        }
+
+        foreach ($q as $item) {
+            $bonus += $item->qBonus;
+        }
+
+        return $bonus;
     }
 }

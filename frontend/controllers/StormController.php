@@ -133,7 +133,13 @@ class StormController extends FrontendController
 
         $timeEnd = StormGameStats::getRemainingTime();
 
-        $isEnd = $timeEnd == 0 ?  1 :  0;
+        if ($timeEnd == 0) {
+            $isEnd = 1;
+            $gameId = Session::getByKey(Session::CURRENT_GAME_ID);
+            $userId = Session::getUserId();
+            StormGameToUser::endGame($gameId, $userId);
+
+        }
 
         $count = Questions::getQuestionByTourCount($_POST['tour_id']);
 
@@ -177,7 +183,7 @@ class StormController extends FrontendController
 
         if($promts) {
             foreach ($promts as $prompt) {
-                $pTime = time() - strtotime($start->created_at);
+                $pTime = time() - strtotime($start->start_at);
                 $time = $prompt->time - $pTime;
                 if ($time < 0) {
                     $time = 0;

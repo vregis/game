@@ -2,6 +2,7 @@
     <thead>
     <th style="width:20%">Название команды</th>
     <th style="width:20%">Время</th>
+    <th style="width:20%">Бонусы</th>
     </thead>
     <tbody>
     <?php usort($gameResults, function ($x, $y) {
@@ -14,6 +15,7 @@
         <tr>
             <td><?php echo $gameResult->userName?></td>
             <td><?php echo \common\models\StormGameToUser::calculateTime($gameResult->start_at, $gameResult->end_at)?></td>
+            <td><?php echo \common\models\StormGameStats::getBonusTime($gameResult->id, $gameResult->user_id)?></td>
         </tr>
     <?php endforeach;?>
     </tbody>

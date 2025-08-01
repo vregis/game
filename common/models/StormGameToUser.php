@@ -60,6 +60,7 @@ class StormGameToUser extends \common\models\generated\StormGameToUser
             ->andWhere(['not', ['storm_game_to_user.end_at' => null]])
             ->andWhere(['<>', 'storm_game_to_user.user_id', 1])
             ->andWhere(['<>', 'storm_game_to_user.user_id', 16])
+            ->andWhere(['<>', 'storm_game_to_user.user_id', 2])
             ->andWhere(['<>', 'storm_game_to_user.user_id', 26])
             ->all();
     }
@@ -67,6 +68,15 @@ class StormGameToUser extends \common\models\generated\StormGameToUser
     public static function calculateTime($timeStart, $timeEnd): string
     {
         return TimeConverter::secondsToTime((strtotime($timeEnd) - strtotime($timeStart)));
+    }
+
+    public static function endTime()
+    {
+        $gameId = Session::getByKey(Session::CURRENT_GAME_ID);
+        $userId = Session::getUserId();
+        $game = self::findOne(['id' => $gameId, 'user_id' => $userId]);
+        $game->end_at = new Expression('NOW()');
+        $game->save();
     }
 
 }
