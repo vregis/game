@@ -13,6 +13,7 @@ use Yii;
  * @property int $game_id
  * @property string|null $created_at
  * @property string|null $updated_at
+ * @property string|null $end_at
  *
  * @property Games $game
  */
@@ -33,7 +34,7 @@ class StormGameToUser extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'team_id', 'game_id'], 'integer'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['created_at', 'updated_at', 'end_at'], 'safe'],
             [['game_id'], 'exist', 'skipOnError' => true, 'targetClass' => Games::class, 'targetAttribute' => ['game_id' => 'id']],
         ];
     }
@@ -50,6 +51,7 @@ class StormGameToUser extends \yii\db\ActiveRecord
             'game_id' => 'Game ID',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'end_at' => 'End At',
         ];
     }
 

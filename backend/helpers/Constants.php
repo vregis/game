@@ -8,9 +8,9 @@ class Constants
 
     public const GAME_SOLO = 'Однопользовательская';
     public const GAME_TEAM = 'Командная';
-    public const GAME_QUESTION_LINE = 'Линейка';
+    public const GAME_QUESTION_LINE = 'Квиз';
     public const GAME_QUESTION_STORM = 'Штурмовка';
-    public const GAME_QUESTION_QUEST = 'Квест';
+    public const GAME_QUESTION_QUEST = 'Линейка';
 
     public static array $gameTypes = [
         1 => self::GAME_SOLO,

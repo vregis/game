@@ -10,6 +10,8 @@ use common\models\LineGameStats;
 use common\models\QuestGameTour;
 use common\models\QuestGameToUser;
 use common\models\Questions;
+use common\models\StormGameStats;
+use common\models\StormGameToUser;
 use common\models\Tours;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
@@ -95,27 +97,33 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $this->layout = 'front';
-        if (Session::getByKey(Session::CURRENT_GAME_ID)) {
-            $tour = QuestGameTour::find()->where(['game_id' => Session::getByKey(Session::CURRENT_GAME_ID)])->orderBy('tour_id DESC')->one();
-            if ($tour) {
-                if ($tour->end_at == null) {
-                    $this->redirect('/frontend/web/quest/tour?id=' . $tour->tour_id);
-                }
-                $game = QuestGameToUser::getRealGameId($tour->game_id);
-                $lastTourGame = Tours::find()->where(['game_id' => $game->game_id])->orderBy('id ASC')->all();
-                if ($lastTourGame) {
-                    $i = 0;
-                    foreach ($lastTourGame as $tourGame) {
-                        if ($i == 1) {
-                            $this->redirect('/frontend/web/quest/new-tour?id=' . $tourGame->id);
-                        }
-                        if ($tourGame->id == $tour->tour_id) {
-                            $i = 1;
+        if ($gameId = Session::getByKey(Session::CURRENT_GAME_ID)) {
+            if ($g = StormGameToUser::find()->where(['id' => $gameId, 'user_id' => Yii::$app->user->id])->andWhere(['is', 'end_at', new \yii\db\Expression('null')])->one()) {
+                $tour = StormGameStats::switchTour();
+                $this->redirect('/frontend/web/storm/tour?id=' . $tour);
+            } else {
+                $tour = QuestGameTour::find()->where(['game_id' => Session::getByKey(Session::CURRENT_GAME_ID)])->orderBy('tour_id DESC')->one();
+                if ($tour) {
+                    if ($tour->end_at == null) {
+                        $this->redirect('/frontend/web/quest/tour?id=' . $tour->tour_id);
+                    }
+                    $game = QuestGameToUser::getRealGameId($tour->game_id);
+                    $lastTourGame = Tours::find()->where(['game_id' => $game->game_id])->orderBy('id ASC')->all();
+                    if ($lastTourGame) {
+                        $i = 0;
+                        foreach ($lastTourGame as $tourGame) {
+                            if ($i == 1) {
+                                $this->redirect('/frontend/web/quest/new-tour?id=' . $tourGame->id);
+                            }
+                            if ($tourGame->id == $tour->tour_id) {
+                                $i = 1;
+                            }
                         }
                     }
+                    $i = 0;
                 }
-                $i = 0;
             }
+
         }
 
 

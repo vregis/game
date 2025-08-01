@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use common\models\Answers;
 use common\models\Games;
 use common\models\helpers\Session;
+use common\models\helpers\TimeConverter;
 use common\models\Prompts;
 use common\models\QuestGameStats;
 use common\models\QuestGameTour;
@@ -80,11 +81,14 @@ class StormController extends FrontendController
             throw new NotFoundHttpException('Questions not found');
         }
 
-        return $this->render('tour', ['tour' => $tour, 'questions' => $questions, 'tours' => $tours]);
+        $disabledTours = StormGameStats::getDisabledTours();
+
+        return $this->render('tour', ['tour' => $tour, 'questions' => $questions, 'tours' => $tours, 'disabledTours' => $disabledTours]);
     }
 
     public function actionSendAnswer()
     {
+        $switchTour = 0;
         $response['success'] = false;
 
         if (empty($_POST['tour_id']) || empty($_POST['answer'])) {
@@ -109,6 +113,7 @@ class StormController extends FrontendController
 
     public function actionUpdateStat()
     {
+        $switchTour = 0;
         $response['success'] = false;
 
         if (empty($_POST['tour_id'])) {
@@ -132,15 +137,21 @@ class StormController extends FrontendController
 
         $count = Questions::getQuestionByTourCount($_POST['tour_id']);
 
-       // if ($count === count($stat)) {
         if (StormGameStats::isGameEnd()) {
             $isEnd = 1;
+        } else {
+            if ($count === count($answeredQuestions)) {
+                StormGameStats::updateRemainingTimeTour($_POST['tour_id']);
+                $switchTour = StormGameStats::switchTour();
+
+            }
         }
 
         $correctResponse = [
             'isEnd' => $isEnd,
             'questions' => $answeredQuestions,
-            'time' => $timeEnd
+            'time' => TimeConverter::secondsToTime($timeEnd),
+            'switchTour' => $switchTour,
         ];
 
         return json_encode($correctResponse);
@@ -152,8 +163,9 @@ class StormController extends FrontendController
         $realGameId = StormGameToUser::getRealGameId($gameId);
         $tourList = Tours::getToursByGameId($realGameId->game_id);
         $correctAnswers = StormGameStats::getCorrectAnswers();
+        $gameResults = StormGameToUser::getGameStats($realGameId->game_id);
 
-        return $this->render('end-game', ['tourList' => $tourList, 'correctAnswers' => $correctAnswers]);
+        return $this->render('end-game', ['tourList' => $tourList, 'correctAnswers' => $correctAnswers, 'gameResults' => $gameResults]);
     }
 
     public function actionPrompts()

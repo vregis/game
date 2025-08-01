@@ -9,7 +9,7 @@ use yii\db\Expression;
 class StormGameStats extends \common\models\generated\StormGameStats
 {
 
-    const DEFAULT_BONUS_TIME = 10;
+    const DEFAULT_BONUS_TIME = 0;
 
     public function behaviors()
     {
@@ -178,7 +178,69 @@ class StormGameStats extends \common\models\generated\StormGameStats
             }
         }
 
+        StormGameToUser::endGame($gameId, Session::getUserId());
+
         return true;
 
+    }
+
+    public static function switchTour(): int
+    {
+        $gameId = Session::getByKey(Session::CURRENT_GAME_ID);
+        $game = StormGameToUser::getRealGameId($gameId);
+        $tours = Tours::getToursByGameId($game->game_id);
+        $userId = Session::getUserId();
+        $enabledTours = [];
+        foreach ($tours as $tour) {
+            $allQuestions = Questions::getQuestionByTourCount($tour->id);
+            $ansQuestions = self::answeredQuestionsByTourCount($gameId, $userId, $tour->id);
+            if ($allQuestions != $ansQuestions) {
+                $enabledTours[] = $tour->id;
+            }
+        }
+
+        if (!$enabledTours) {
+            return 0;
+        } else {
+            return min($enabledTours);
+        }
+    }
+
+    public static function answeredQuestionsByTourCount(int $gameId, int $userId, int $tourId)
+    {
+        return self::find()->where(['game_id' => $gameId, 'tour_id' => $tourId, 'user_id' => $userId, 'is_correct' => true])->count();
+    }
+
+    public static function getDisabledTours(): array
+    {
+        $gameId = Session::getByKey(Session::CURRENT_GAME_ID);
+        $game = StormGameToUser::getRealGameId($gameId);
+        $tours = Tours::getToursByGameId($game->game_id);
+        $userId = Session::getUserId();
+
+        $disabledTours = [];
+        foreach ($tours as $tour) {
+            $allQuestions = Questions::getQuestionByTourCount($tour->id);
+            $ansQuestions = self::answeredQuestionsByTourCount($gameId, $userId, $tour->id);
+            if ($allQuestions == $ansQuestions) {
+                $disabledTours[] = $tour->id;
+            }
+        }
+
+        return $disabledTours;
+    }
+
+    public static function updateRemainingTimeTour(int $tourId): void
+    {
+        $gameId = Session::getByKey(Session::CURRENT_GAME_ID);
+        $t = Tours::getTourById($tourId);
+        $userId = Session::getUserId();
+        $bonus = self::DEFAULT_BONUS_TIME;
+
+        if ($t) {
+            $bonus += $t->bonus;
+        }
+
+        \Yii::$app->getDb()->createCommand('UPDATE `storm_game_to_user` SET created_at = DATE_ADD(created_at, INTERVAL '.$bonus.' second) WHERE id = '.$gameId.' AND user_id = '.$userId)->execute();
     }
 }

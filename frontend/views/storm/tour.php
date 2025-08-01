@@ -12,14 +12,15 @@
         <div id="collapse-tours" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
             <div class="card-body">
                 <?php foreach ($tours as $t):?>
-                    <p><a href="<?php echo \yii\helpers\Url::to(['/storm/tour', 'id' => $t->id])?>"><?php echo $t->name?></a></p>
+                <?php $isDisabled = in_array($t->id, $disabledTours)?>
+                    <p><a <?php echo $isDisabled? "onclick= 'return false'" : ""?> href="<?php echo \yii\helpers\Url::to(['/storm/tour', 'id' => $t->id])?>"><?php echo $t->name?> <?php echo $isDisabled ?'(Все вопросы отвечены)':''?></a></p>
                 <?php endforeach;?>
             </div>
         </div>
     </div>
 </div>
 <div class="col-12"><h3>Осталось: <span class="rem-time"></span> секунд</h3></div>
-<div class="update-stat"  data-url="<?php echo \yii\helpers\Url::to(['/storm/update-stat'])?>" data-end-url="<?php echo \yii\helpers\Url::to(['/storm/game-end'])?>" data-prompt-url="<?php echo \yii\helpers\Url::to(['/storm/prompts'])?>"></div>
+<div class="update-stat"  data-url="<?php echo \yii\helpers\Url::to(['/storm/update-stat'])?>" data-end-url="<?php echo \yii\helpers\Url::to(['/storm/game-end'])?>" data-tour-url="<?php echo \yii\helpers\Url::to(['/storm/tour'])?>" data-prompt-url="<?php echo \yii\helpers\Url::to(['/storm/prompts'])?>"></div>
 <div style="margin-bottom:20px;" class="container-fluid">
     <div class="row">
         <div style="margin-bottom:10px" class="col-lg-4 col-md-12 col-sm-12">
@@ -113,6 +114,7 @@ $this->registerJs("
                             $('.answer').val('')
                         }
                     }
+                    
                 }    
             })
     })
@@ -133,6 +135,9 @@ $this->registerJs("
                     for (key in msg.questions) {
                         $('.correct-answer-id-'+key).find('span').text(msg.questions[key]);
                         $('.correct-answer-id-'+key).show();
+                    }
+                    if (msg.switchTour != 0 && msg.switchTour != undefined) {
+                        window.location.href = $('.update-stat').attr('data-tour-url') + '?id=' + msg.switchTour;
                     }
                 }
                        
