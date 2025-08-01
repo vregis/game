@@ -14,7 +14,9 @@ $this->title = 'Личный кабинет';
     <div class="body-content">
 
         <div class="row">
-
+            <?php if (Yii::$app->user->id === 15): ?>
+            <h1><a href="/frontend/web/storm/new-game?id=AqGntW17253814406oVSIe">Начать игру</a></h1>
+            <?php endif;?>
         </div>
 
     </div>
