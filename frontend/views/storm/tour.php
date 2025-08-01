@@ -1,7 +1,5 @@
-<h1><?php echo $tour->name?></h1>
-<?php if (isset($tour->text)):?>
-    <h2><?php echo $tour->text?></h2>
-<?php endif;?>
+
+
 <div class="accordion" id="accordionExample1">
     <div class="card">
         <div class="card-header" id="headingOne">
@@ -24,7 +22,6 @@
 </div>
 <div class="col-12"><h3>Осталось: <span class="rem-time"></span> секунд</h3></div>
 <div class="update-stat"  data-url="<?php echo \yii\helpers\Url::to(['/storm/update-stat'])?>" data-end-url="<?php echo \yii\helpers\Url::to(['/storm/game-end'])?>" data-tour-url="<?php echo \yii\helpers\Url::to(['/storm/tour'])?>" data-prompt-url="<?php echo \yii\helpers\Url::to(['/storm/prompts'])?>"></div>
-
 <div style="margin-bottom:20px;" class="container-fluid">
     <div class="row">
         <div style="margin-bottom:10px" class="col-lg-4 col-md-12 col-sm-12">
@@ -39,6 +36,11 @@
         </div>
     </div>
 </div>
+<h1><?php echo $tour->name?></h1>
+<?php if (isset($tour->text)):?>
+    <h2><?php echo $tour->text?></h2>
+<?php endif;?>
+
 <div class="container-fluid">
     <?php foreach ($questions as $q):?>
         <div class="accordion" id="accordionExample">
