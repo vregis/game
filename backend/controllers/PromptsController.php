@@ -58,9 +58,12 @@ class PromptsController extends BackendController
             */
         ]);
 
+        $q = Questions::find()->where(['id' => $id])->one();
+
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'id' => $id,
+            'tour_id' => $q->tour_id,
         ]);
     }
 

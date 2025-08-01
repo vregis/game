@@ -10,6 +10,7 @@ use yii\grid\GridView;
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = 'Prompts';
+$this->params['breadcrumbs'][] = ['label' => 'Вопросы', 'url' => ['questions/index', 'id' => $tour_id]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="prompts-index">

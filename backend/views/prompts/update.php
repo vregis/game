@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /** @var common\models\Prompts $model */
 
 $this->title = 'Update Prompts: ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Prompts', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Подсказки', 'url' => ['index', 'id' => $model->question_id]];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
