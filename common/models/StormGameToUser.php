@@ -59,7 +59,6 @@ class StormGameToUser extends \common\models\generated\StormGameToUser
             ->where(['storm_game_to_user.game_id' => $gameId])
             ->andWhere(['not', ['storm_game_to_user.end_at' => null]])
             ->andWhere(['<>', 'storm_game_to_user.user_id', 1])
-            ->andWhere(['<>', 'storm_game_to_user.user_id', 16])
             ->andWhere(['<>', 'storm_game_to_user.user_id', 2])
             ->andWhere(['<>', 'storm_game_to_user.user_id', 26])
             ->all();
