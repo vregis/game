@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 use common\models\Answers;
 use common\models\Games;
+use common\models\GameToUser;
 use common\models\helpers\Session;
 use common\models\helpers\TimeConverter;
 use common\models\Prompts;
@@ -113,6 +114,9 @@ class StormController extends FrontendController
 
     public function actionUpdateStat()
     {
+        $gameId = Session::getByKey(Session::CURRENT_GAME_ID);
+        $userId = Session::getUserId();
+        $gameToUser = StormGameToUser::find()->where(['id' => $gameId, 'user_id' => $userId])->one();
         $switchTour = 0;
         $response['success'] = false;
 
@@ -135,13 +139,13 @@ class StormController extends FrontendController
 
         if ($timeEnd == 0) {
             $isEnd = 1;
-            $gameId = Session::getByKey(Session::CURRENT_GAME_ID);
-            $userId = Session::getUserId();
+
             StormGameToUser::endGame($gameId, $userId);
 
         }
 
         $count = Questions::getQuestionByTourCount($_POST['tour_id']);
+        $tour = Tours::getTourById($_POST['tour_id']);
 
         if (StormGameStats::isGameEnd()) {
             $isEnd = 1;
@@ -150,6 +154,8 @@ class StormController extends FrontendController
                 StormGameStats::updateRemainingTimeTour($_POST['tour_id']);
                 $switchTour = StormGameStats::switchTour();
 
+            }elseif(time() - strtotime($gameToUser->start_at) > $tour->time && $tour->time !== null) {
+                $switchTour = StormGameStats::switchTour(true);
             }
         }
 

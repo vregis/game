@@ -16,7 +16,7 @@
             <div class="card-body">
                 <?php foreach ($tours as $t):?>
                 <?php $isDisabled = in_array($t->id, $disabledTours)?>
-                    <p><a <?php echo $isDisabled? "onclick= 'return false'" : ""?> href="<?php echo \yii\helpers\Url::to(['/storm/tour', 'id' => $t->id])?>"><?php echo $t->name?> <?php echo $isDisabled ?'(Все вопросы отвечены)':''?></a></p>
+                    <p><a <?php echo $isDisabled? "onclick= 'return false'" : ""?> href="<?php echo \yii\helpers\Url::to(['/storm/tour', 'id' => $t->id])?>"><?php echo $t->name?> <?php echo $isDisabled ?'(Тур закрыт)':''?></a></p>
                 <?php endforeach;?>
             </div>
         </div>

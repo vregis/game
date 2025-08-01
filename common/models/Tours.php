@@ -67,6 +67,7 @@ class Tours extends generated\Tours
             'name' => 'Название',
             'number' => 'Номер',
             'game_id' => 'Игра',
+            'time' => 'Время',
             'type' => 'Тип',
             'is_perforate' => 'Сквозной',
             'created_at' => 'Создан',

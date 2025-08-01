@@ -16,9 +16,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'number')->textInput(['type' => 'number']) ?>
 
-    <?php if ($game->question_type != 2):?>
+    <?php //if ($game->question_type != 2):?>
         <?= $form->field($model, 'time')->textInput(['type' => 'number']) ?>
-    <?php endif;?>
+    <?php //endif;?>
 
     <?= $form->field($model, 'game_id')->hiddenInput(['value' => $id])->label(false) ?>
 
