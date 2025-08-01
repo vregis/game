@@ -58,7 +58,10 @@ class StormGameToUser extends \common\models\generated\StormGameToUser
             ->join('LEFT JOIN', 'user', 'storm_game_to_user.user_id = user.id')
             ->where(['storm_game_to_user.game_id' => $gameId])
             ->andWhere(['not', ['storm_game_to_user.end_at' => null]])
-            ->andWhere(['<>', 'storm_game_to_user.user_id', 1])->all();
+            ->andWhere(['<>', 'storm_game_to_user.user_id', 1])
+            ->andWhere(['<>', 'storm_game_to_user.user_id', 16])
+            ->andWhere(['<>', 'storm_game_to_user.user_id', 26])
+            ->all();
     }
 
     public static function calculateTime($timeStart, $timeEnd): string
