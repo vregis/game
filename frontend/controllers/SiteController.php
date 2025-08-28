@@ -108,6 +108,7 @@ class SiteController extends Controller
                         $this->redirect('/frontend/web/quest/tour?id=' . $tour->tour_id);
                     }
                     $game = QuestGameToUser::getRealGameId($tour->game_id);
+                    if ($game) {
                     $lastTourGame = Tours::find()->where(['game_id' => $game->game_id])->orderBy('id ASC')->all();
                     if ($lastTourGame) {
                         $i = 0;
@@ -120,6 +121,7 @@ class SiteController extends Controller
                             }
                         }
                     }
+                }
                     $i = 0;
                 }
             }
