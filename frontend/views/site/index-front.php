@@ -12,7 +12,7 @@
             min-height: 100vh;
             font-family: 'Comic Sans MS', cursive, sans-serif;
             position: relative;
-            overflow-x: hidden!important;
+            overflow: hidden!important;
         }
 
         .header {

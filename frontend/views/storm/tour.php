@@ -129,6 +129,7 @@
         box-shadow: var(--bs-refresh-box-shadow) !important;
     }
 </style>
+<h1><?php echo $tour->name?></h1>
 <div class="accordion" id="accordionExample1">
     <div class="card">
         <div class="card-header" id="headingOne">
@@ -165,7 +166,7 @@
         </div>
     </div>
 </div>
-<h1><?php echo $tour->name?></h1>
+
 <?php if (isset($tour->text)):?>
     <p><?php echo $tour->text?></p>
 <?php endif;?>
