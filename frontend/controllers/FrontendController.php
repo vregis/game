@@ -14,10 +14,10 @@ class FrontendController extends Controller
     public function __construct($id, $module, $config = [])
     {
         parent::__construct($id, $module, $config = []);
-        $this->layout = 'front';
+        $this->layout = 'adaptive';
         $userId = Session::getUserId() ?? null;
 
-        if ($userId === null && !strstr($_SERVER['REQUEST_URI'], '/frontend/web/quest/new-game?id')) {
+        if ($userId === null && !strstr($_SERVER['REQUEST_URI'], '/new-game?id')) {
             throw new ForbiddenHttpException(\Yii::t('yii', 'You are not allowed to perform this action.'));
         }
 

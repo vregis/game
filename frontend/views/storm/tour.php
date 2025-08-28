@@ -1,5 +1,134 @@
+<style>
+    :root {
+        --bs-refresh-primary: #4361ee;
+        --bs-refresh-secondary: #6c757d;
+        --bs-refresh-success: #06d6a0;
+        --bs-refresh-info: #118ab2;
+        --bs-refresh-warning: #ffd166;
+        --bs-refresh-danger: #ef476f;
+        --bs-refresh-light: #f8f9fa;
+        --bs-refresh-dark: #212529;
+        --bs-refresh-border-radius: 12px;
+        --bs-refresh-box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        --bs-refresh-transition: all 0.3s ease;
+    }
 
+    /* Обновленные кнопки */
+    .btn {
+        border-radius: var(--bs-refresh-border-radius);
+        transition: var(--bs-refresh-transition);
+        font-weight: 500;
+        padding: 0.5rem 1.5rem;
+        border: none;
+    }
 
+    .btn-primary {
+        background-color: var(--bs-refresh-primary);
+    }
+
+    .btn-primary:hover {
+        background-color: #3a56d4;
+        transform: translateY(-2px);
+        box-shadow: var(--bs-refresh-box-shadow);
+    }
+
+    .btn-success {
+        background-color: var(--bs-refresh-success);
+    }
+
+    .btn-info {
+        background-color: var(--bs-refresh-info);
+    }
+
+    .btn-warning {
+        background-color: var(--bs-refresh-warning);
+        color: var(--bs-refresh-dark);
+    }
+
+    .btn-danger {
+        background-color: var(--bs-refresh-danger);
+    }
+
+    /* Карточки */
+    .card {
+        border-radius: var(--bs-refresh-border-radius);
+        box-shadow: var(--bs-refresh-box-shadow);
+        border: none;
+        transition: var(--bs-refresh-transition);
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+        border-top-left-radius: var(--bs-refresh-border-radius) !important;
+        border-top-right-radius: var(--bs-refresh-border-radius) !important;
+        border-bottom: none;
+        font-weight: 600;
+    }
+
+    /* Навигация */
+    .navbar {
+        box-shadow: var(--bs-refresh-box-shadow);
+        padding: 0.8rem 1rem;
+    }
+
+    .nav-link {
+        font-weight: 500;
+        transition: var(--bs-refresh-transition);
+        border-radius: 8px;
+        padding: 0.5rem 1rem !important;
+    }
+
+    .nav-link:hover {
+        background-color: rgba(67, 97, 238, 0.1);
+    }
+
+    /* Формы */
+    .form-control {
+        border-radius: var(--bs-refresh-border-radius);
+        padding: 0.75rem 1rem;
+        border: 1px solid #e2e8f0;
+        transition: var(--bs-refresh-transition);
+    }
+
+    .form-control:focus {
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        border-color: var(--bs-refresh-primary);
+    }
+
+    /* Уведомления */
+    .alert {
+        border-radius: var(--bs-refresh-border-radius);
+        border: none;
+        box-shadow: var(--bs-refresh-box-shadow);
+    }
+
+    /* Модальные окна */
+    .modal-content {
+        border-radius: var(--bs-refresh-border-radius);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        border: none;
+    }
+
+    /* Аккордеон */
+    .accordion-button {
+        border-radius: var(--bs-refresh-border-radius) !important;
+        font-weight: 500;
+        padding: 1rem 1.25rem;
+    }
+
+    /* Утилиты */
+    .rounded {
+        border-radius: var(--bs-refresh-border-radius) !important;
+    }
+
+    .shadow {
+        box-shadow: var(--bs-refresh-box-shadow) !important;
+    }
+</style>
 <div class="accordion" id="accordionExample1">
     <div class="card">
         <div class="card-header" id="headingOne">
@@ -38,7 +167,7 @@
 </div>
 <h1><?php echo $tour->name?></h1>
 <?php if (isset($tour->text)):?>
-    <h2><?php echo $tour->text?></h2>
+    <p><?php echo $tour->text?></p>
 <?php endif;?>
 
 <div class="container-fluid">
