@@ -241,7 +241,7 @@
                 <?php if ($exist):?>
                     <p>Данный пользователь уже участвует в игре</p>
                 <?php else: ?>
-                    <h1><a class="btn btn-start" href="/frontend/web/storm/new-game?id=AqGntW17253814406oVSIe">Начать игру</a></h1>
+                    <h1><a class="btn btn-start" href="/frontend/web/storm/new-game?id=Uky3fq17564141086DOwJX">Начать игру</a></h1>
                 <?php endif;?>
             </div>
         </div>
