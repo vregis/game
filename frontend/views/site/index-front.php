@@ -238,7 +238,7 @@
             <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='72' height='72'%3E%3Cpath fill='%23ffc107' d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z'/%3E%3C/svg%3E" alt="Пчелка" class="mb-3">
             <div class="row">
                 <?php $exist = \common\models\StormGameToUser::find()->where(['user_id' => Yii::$app->user->getId(), 'game_id' => 15])->one(); ?>
-                <?php if ($exist):?>
+                <?php if ($exist && Yii::$app->user->id != 2):?>
                     <p>Данный пользователь уже участвует в игре</p>
                 <?php else: ?>
                     <h1><a class="btn btn-start" href="/frontend/web/storm/new-game?id=Uky3fq17564141086DOwJX">Начать игру</a></h1>
