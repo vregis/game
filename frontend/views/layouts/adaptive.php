@@ -39,7 +39,7 @@ $this->registerJsFile($publishedRes[1].'/control_sidebar.js', ['depends' => '\ha
     <?= $this->render('part/sidebar', ['assetDir' => $assetDir]) ?>
 
     <!-- Content Wrapper. Contains page content -->
-    <?= $this->render('content', ['content' => $content, 'assetDir' => $assetDir]) ?>
+    <?= $this->render('part/content', ['content' => $content, 'assetDir' => $assetDir]) ?>
     <!-- /.content-wrapper -->
 
     <!-- Control Sidebar -->
@@ -47,7 +47,7 @@ $this->registerJsFile($publishedRes[1].'/control_sidebar.js', ['depends' => '\ha
     <!-- /.control-sidebar -->
 
     <!-- Main Footer -->
-    <?= $this->render('footer') ?>
+    <?= $this->render('part/footer') ?>
 </div>
 
 <?php $this->endBody() ?>
