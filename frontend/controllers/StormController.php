@@ -15,11 +15,45 @@ use common\models\Questions;
 use common\models\StormGameStats;
 use common\models\StormGameToUser;
 use common\models\Tours;
+use Yii;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 
 class StormController extends FrontendController
 {
+
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'only' => ['new-game'],
+                'rules' => [
+                    [
+                        'actions' => ['signup'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'actions' => ['new-game'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::class,
+                'actions' => [
+                    'logout' => ['post'],
+                ],
+            ],
+        ];
+    }
     public function actionNewGame($id)
     {
         $game = Games::getGameByUrl($id);
@@ -34,6 +68,7 @@ class StormController extends FrontendController
     public function actionGameStart()
     {
         $response['success'] = false;
+        $response['msg'] = 'Произошла ошибка';
 
         if (empty($_POST['id'])) {
             return json_encode($response);
@@ -42,6 +77,13 @@ class StormController extends FrontendController
         $game = Games::getGameById($_POST['id']);
 
         if (!$game) {
+            return json_encode($response);
+        }
+
+        $isExist = StormGameToUser::find()->where(['game_id' => $game->id, 'user_id' => Yii::$app->user->id, 'end_at' => null])->one();
+
+        if ($isExist) {
+            $response['msg'] = 'Данный пользователь уже участвует в игре';
             return json_encode($response);
         }
 

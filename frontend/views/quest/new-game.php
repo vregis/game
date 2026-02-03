@@ -16,6 +16,8 @@ $this->registerJs("
                 success: function(msg){
                     if (msg.success == true ) {
                         window.location.href = msg.url;
+                    } else {
+                    alert(msg.msg);
                     }
                 }
             })
