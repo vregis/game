@@ -15,6 +15,23 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'game_type')->dropDownList(Constants::$gameTypes) ?>
+    <?= $form->field($model, 'cities')->checkboxList(
+            \yii\helpers\ArrayHelper::map(\common\models\City::find()->orderBy('name')->all(), 'id', 'name'),
+            [
+                    'item' => function($index, $label, $name, $checked, $value) {
+                        $checkbox = Html::checkbox($name, $checked, [
+                                'value' => $value,
+                                'id' => 'city-' . $value,
+                                'class' => 'city-checkbox'
+                        ]);
+
+                        $label = Html::label($label, 'city-' . $value, ['class' => 'city-label']);
+
+                        return Html::tag('div', $checkbox . ' ' . $label, ['class' => 'checkbox-item']);
+                    },
+                    'separator' => '<br>'
+            ]
+    )->label('Выберите города для игры') ?>
 
 
     <?= $form->field($model, 'question_type')->dropDownList(Constants::$gameQuestionTypes) ?>

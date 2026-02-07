@@ -21,7 +21,8 @@
         "hail812/yii2-adminlte3": "~1.1",
         "rmrevin/yii2-fontawesome": "2.10.*",
       "ext-json": "*",
-        "itstructure/yii2-ckeditor": "~1.1.6"
+        "itstructure/yii2-ckeditor": "~1.1.6",
+        "yiisoft/yii2-authclient": "^2.2"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

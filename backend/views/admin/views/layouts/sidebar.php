@@ -41,6 +41,7 @@ use backend\helpers\Constants;
             echo \hail812\adminlte\widgets\Menu::widget([
                 'items' => [
                     ['label' => Constants::GAMES,  'icon' => 'file-code', 'url' => ['/games']],
+                    ['label' => Constants::CITY,  'icon' => 'file-code', 'url' => ['/city']],
                     ['label' => 'Gii',  'icon' => 'file-code', 'url' => ['/gii'], 'target' => '_blank'],
 //                    [
 //                        'label' => 'Starter Pages',

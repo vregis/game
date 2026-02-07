@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\models\Answers;
+use common\models\City;
 use common\models\Games;
 use common\models\GameToUser;
 use common\models\helpers\Session;
@@ -53,12 +54,12 @@ class SiteController extends Controller
                 'only' => ['logout', 'signup', 'about', 'index'],
                 'rules' => [
                     [
-                        'actions' => ['signup'],
+                        'actions' => ['signup', 'index'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['index','logout', 'about', 'question'],
+                        'actions' => ['logout', 'about', 'question'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -98,6 +99,7 @@ class SiteController extends Controller
     {
         $this->layout = false;
         if ($gameId = Session::getByKey(Session::CURRENT_GAME_ID)) {
+
             if ($g = StormGameToUser::find()->where(['id' => $gameId, 'user_id' => Yii::$app->user->id])->andWhere(['is', 'end_at', new \yii\db\Expression('null')])->one()) {
                 $tour = StormGameStats::switchTour();
                 $this->redirect('/frontend/web/storm/tour?id=' . $tour);
@@ -129,7 +131,8 @@ class SiteController extends Controller
         }
 
 
-        return $this->render('index-front');
+        $city = City::find()->all();
+        return $this->render('landing-pip', ['city' => $city]);
     }
 
     /**
@@ -470,6 +473,137 @@ class SiteController extends Controller
         }
 
         return $this->render('endGame', ['stat' => $stat, 'toursList' => $toursList]);
+
+    }
+
+    /**
+     * Обработка успешной авторизации через VK
+     */
+    public function onAuthSuccess(ClientInterface $client)
+    {
+        $attributes = $client->getUserAttributes();
+
+        // Логируем полученные данные для отладки
+        Yii::info('VK attributes: ' . print_r($attributes, true), 'auth');
+
+        // Получаем email из атрибутов
+        $email = $attributes['email'] ?? null;
+        $vkId = (string)$attributes['id'];
+
+        // 1. Ищем пользователя по vkontakte_id
+        $user = User::findByVkontakteId($vkId);
+
+        if ($user) {
+            // Обновляем данные пользователя из VK
+            $user->updateFromVK($attributes);
+
+            if (Yii::$app->user->login($user, 3600 * 24 * 30)) {
+                Yii::$app->session->setFlash('success', 'Вы успешно вошли через VK!');
+                return $this->goBack();
+            }
+        }
+
+        // 2. Если пользователь найден по email (привязка аккаунтов)
+        if ($email && !$user) {
+            $user = User::findByEmail($email);
+
+            if ($user) {
+                // Спрашиваем пользователя, хочет ли он привязать VK
+                Yii::$app->session->set('vk_attributes', $attributes);
+                return $this->redirect(['/site/link-vk']);
+            }
+        }
+
+        // 3. Регистрируем нового пользователя
+        if (!$user) {
+            $user = User::createFromVK($attributes);
+
+            if ($user->save()) {
+                if (Yii::$app->user->login($user, 3600 * 24 * 30)) {
+                    Yii::$app->session->setFlash('success', 'Регистрация через VK прошла успешно!');
+                    return $this->goBack();
+                }
+            } else {
+                Yii::$app->session->setFlash('error',
+                    'Ошибка при сохранении пользователя: ' .
+                    print_r($user->errors, true)
+                );
+            }
+        }
+
+        return $this->goHome();
+    }
+
+    /**
+     * Страница для привязки VK к существующему аккаунту
+     */
+    public function actionLinkVk()
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['/site/login']);
+        }
+
+        $attributes = Yii::$app->session->get('vk_attributes');
+
+        if (!$attributes) {
+            return $this->redirect(['/site/login']);
+        }
+
+        $user = Yii::$app->user->identity;
+
+        if (Yii::$app->request->isPost) {
+            if (Yii::$app->request->post('confirm') === 'yes') {
+                // Привязываем VK к аккаунту
+                $user->vkontakte_id = (string)$attributes['id'];
+                $user->vkontakte_data = json_encode($attributes);
+                $user->updated_at = time();
+
+                if ($user->save()) {
+                    Yii::$app->session->remove('vk_attributes');
+                    Yii::$app->session->setFlash('success', 'Аккаунт VK успешно привязан!');
+                    return $this->goHome();
+                }
+            } else {
+                Yii::$app->session->remove('vk_attributes');
+                return $this->goHome();
+            }
+        }
+
+        return $this->render('link-vk', [
+            'vkName' => $attributes['first_name'] . ' ' . $attributes['last_name'],
+        ]);
+    }
+
+    /**
+     * Обработка отмены авторизации
+     */
+    public function onAuthCancel()
+    {
+        Yii::$app->session->setFlash('warning', 'Авторизация через VK была отменена.');
+        return $this->redirect(['/site/login']);
+    }
+
+    public function actionChangeCity()
+    {
+        $response['success'] = false;
+
+        if (!isset($_POST['id']) or empty($_POST['id'])) {
+            return json_encode($response);
+        }
+
+        $city = City::find()->where(['id' => $_POST['id']])->one();
+
+        if (!$city) {
+            return json_encode($response);
+        }
+
+        $games = $city->getGames();
+
+        if (!$games) {
+
+        } else {
+
+        }
 
     }
 }

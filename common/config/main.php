@@ -19,5 +19,17 @@ return [
                 ],
             ],
         ],
+        'authClientCollection' => [
+            'class' => 'yii\authclient\Collection',
+            'clients' => [
+                'vkontakte' => [
+                    'class' => 'yii\authclient\clients\VKontakte',
+                    'clientId' => 'YOUR_CLIENT_ID',
+                    'clientSecret' => 'YOUR_CLIENT_SECRET',
+                    'scope' => 'email', // запрашиваем email
+                ],
+                // другие OAuth провайдеры...
+            ],
+        ],
     ],
 ];

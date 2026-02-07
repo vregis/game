@@ -5,6 +5,7 @@ namespace backend\helpers;
 class Constants
 {
     const GAMES = 'Игры';
+    const CITY = 'Города';
 
     public const GAME_SOLO = 'Однопользовательская';
     public const GAME_TEAM = 'Командная';

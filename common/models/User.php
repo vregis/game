@@ -210,4 +210,82 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+
+    public static function findByVkontakteId($id)
+    {
+        return static::findOne(['vkontakte_id' => $id]);
+    }
+
+    /**
+     * Поиск пользователя по email
+     * @param string $email
+     * @return User|null
+     */
+    public static function findByEmail($email)
+    {
+        return static::findOne(['email' => $email]);
+    }
+
+    /**
+     * Создает пользователя из данных VK
+     * @param array $attributes - данные из VK
+     * @return User
+     */
+    public static function createFromVK($attributes)
+    {
+        $user = new static();
+
+        // Генерируем уникальный username если нужно
+        $username = 'vk_' . $attributes['id'];
+        if (isset($attributes['first_name'])) {
+            $username = mb_strtolower(transliterator_transliterate(
+                'Any-Latin; Latin-ASCII',
+                $attributes['first_name']
+            ));
+
+            // Проверяем уникальность username
+            $counter = 1;
+            $originalUsername = $username;
+            while (static::find()->where(['username' => $username])->exists()) {
+                $username = $originalUsername . '_' . $counter;
+                $counter++;
+            }
+        }
+
+        $user->username = $username;
+        $user->email = $attributes['email'] ?? null;
+        $user->vkontakte_id = (string)$attributes['id'];
+        $user->vkontakte_data = json_encode($attributes);
+
+        // Генерируем случайный пароль (пользователь будет использовать VK для входа)
+        $user->setPassword(Yii::$app->security->generateRandomString());
+        $user->generateAuthKey();
+
+        // Устанавливаем статус и даты
+        $user->status = self::STATUS_ACTIVE;
+        $user->created_at = time();
+        $user->updated_at = time();
+
+        return $user;
+    }
+
+    /**
+     * Обновляет данные пользователя из VK
+     * @param array $attributes - данные из VK
+     * @return bool
+     */
+    public function updateFromVK($attributes)
+    {
+        $this->vkontakte_data = json_encode($attributes);
+
+        // Обновляем имя если оно изменилось
+        if (isset($attributes['first_name'], $attributes['last_name'])) {
+            $newName = $attributes['first_name'] . ' ' . $attributes['last_name'];
+            // Можно добавить логику обновления username или других полей
+        }
+
+        $this->updated_at = time();
+
+        return $this->save(false);
+    }
 }

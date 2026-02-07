@@ -18,9 +18,12 @@ use yii\db\Expression;
  * @property int $price
  * @property int $created_at
  * @property int $updated_at
+ * @property City[] $cities
  */
 class Games extends generated\Games
 {
+
+    protected $cities;
 
     public function rules()
     {
@@ -107,5 +110,24 @@ class Games extends generated\Games
         }
 
         return $url;
+    }
+
+    /**
+     * Связь с городами через промежуточную таблицу
+     */
+    public function getCities()
+    {
+        return $this->hasMany(City::class, ['id' => 'city_id'])
+            ->viaTable('{{%city_games}}', ['game_id' => 'id']);
+    }
+
+    /**
+     * Получить все города с сортировкой (опционально)
+     */
+    public function getCitiesSorted()
+    {
+        return $this->hasMany(City::class, ['id' => 'city_id'])
+            ->viaTable('{{%city_games}}', ['game_id' => 'id'])
+            ->orderBy(['name' => SORT_ASC]);
     }
 }
