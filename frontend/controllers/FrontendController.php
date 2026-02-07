@@ -14,7 +14,7 @@ class FrontendController extends Controller
     public function __construct($id, $module, $config = [])
     {
         parent::__construct($id, $module, $config = []);
-        $this->layout = 'adaptive';
+        $this->layout = 'pip';
         $userId = Session::getUserId() ?? null;
 
         if ($userId === null && !strstr($_SERVER['REQUEST_URI'], '/new-game?id')) {

@@ -459,52 +459,12 @@
 <main>
     <div class="container">
         <div class="content-wrapper">
-            <!-- Выпадающий список с городами -->
             <section class="panel dropdown-section">
-                <h2 class="panel-title flicker">Добро пожаловать</h2>
-                <label for="city-select" class="dropdown-label">Выберите город:</label>
-                <select id="city-select" data-url="<?php echo \yii\helpers\Url::to(['/site/change-city'])?>" class="fallout-select">
-                    <?php if (!$city):?>
-                    <option value="" disabled selected>-- ВЫБЕРИТЕ ГОРОД ИЗ СПИСКА --</option>
-                    <?php else: ?>
-                        <?php foreach ($city as $c):?>
-                            <option value="<?php echo $c->id?>>"><?php echo $c->name?></option>
-                        <?php endforeach;?>
-                    <?php endif;?>
-                </select>
-
-                <!--<div class="radio-group">
-                    <p style="margin-top: 15px; margin-bottom: 10px; color: #00aa00;">ПРИОРИТЕТ РАЗМЕЩЕНИЯ:</p>
-                    <label class="radio-label">
-                        <input type="radio" name="priority" class="radio-input" checked>
-                        СТАНДАРТНЫЙ (6-8 МЕСЯЦЕВ)
-                    </label>
-                    <label class="radio-label">
-                        <input type="radio" name="priority" class="radio-input">
-                        ПОВЫШЕННЫЙ (3-4 МЕСЯЦА) +500 КАПС
-                    </label>
-                    <label class="radio-label">
-                        <input type="radio" name="priority" class="radio-input">
-                        СРОЧНЫЙ (1 МЕСЯЦ) +2000 КАПС
-                    </label>
-                </div> -->
-
-                <!--<button class="pip-button" id="confirm-selection">ПОДТВЕРДИТЬ ВЫБОР</button> -->
-                <p style="margin-top: 15px; font-size: 14px; color: #00aa00;">
-                    ПОСЛЕ ВЫБОРА ГОРОДА С ВАМИ СВЯЖЕТСЯ ПРЕДСТАВИТЕЛЬ VAULT-TEC ДЛЯ ОБСУЖДЕНИЯ ДЕТАЛЕЙ РАЗМЕЩЕНИЯ В УБЕЖИЩЕ.
-                </p>
-            </section>
-
-            <!-- Обычный список -->
-            <section class="panel list-section">
-                <h2 class="panel-title flicker">Доступные игры в городе <span class="current_city"></span></h2>
-                <ul class="game_list">
-                    <li>ЗАЩИТА ОТ ЯДЕРНЫХ, БИОЛОГИЧЕСКИХ И ХИМИЧЕСКИХ УГРОЗ</li>
-                </ul>
-
-                <div style="margin-top: 20px; padding: 15px; background-color: rgba(0, 26, 0, 0.5); border: 1px solid #00aa00;">
-                    <p style="color: #00ff00; font-size: 14px;"><strong>СТАТУС СИСТЕМЫ:</strong> ВСЕ УБЕЖИЩА ФУНКЦИОНИРУЮТ В ШТАТНОМ РЕЖИМЕ</p>
-                    <p style="color: #00aa00; font-size: 12px; margin-top: 5px;">ПОСЛЕДНЕЕ ОБНОВЛЕНИЕ: 23.10.2077 04:17</p>
+                <h2 class="panel-title flicker"><?php echo $game->name?></h2>
+                <?php echo $game->text?>
+                <div style="margin-top:10px; text-align: center">
+                    <a style="text-decoration: none" href="http://<?php echo $_SERVER['HTTP_HOST']?>/frontend/web/<?php echo $game->getGameTypeFrontUrl()?>/new-game?id=<?php echo $game->url?>" class="pip-button" id="confirm-selection">К ИГРЕ</a>
+                    <a href = "/" class="pip-button" id="confirm-selection">НАЗАД</a>
                 </div>
             </section>
         </div>
@@ -641,37 +601,6 @@
                 }, 50);
             }
         }, 300);
-
-        $(document).on('change', '.fallout-select', function(){
-            $.ajax({
-                type: 'POST',
-                data:{id: $(this).val()},
-                url: $(this).attr('data-url'),
-                dataType: 'json',
-                success: function(msg){
-                    if (msg.success == true ) {
-                        $('.game_list').html(msg.content)
-                    } else {
-                        alert('Произошла ошибка')
-                    }
-                }
-            })
-        })
-
-
-            $.ajax({
-                type: 'POST',
-                data:{id: $('.fallout-select').val()},
-                url: $('.fallout-select').attr('data-url'),
-                dataType: 'json',
-                success: function(msg){
-                    if (msg.success == true ) {
-                        $('.game_list').html(msg.content)
-                    } else {
-                        alert('Произошла ошибка')
-                    }
-                }
-            })
 
     });
 </script>
