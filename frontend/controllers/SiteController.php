@@ -266,7 +266,8 @@ class SiteController extends Controller
             return $this->goHome();
         }
 
-        return $this->render('signup', [
+        $this->layout = false;
+        return $this->render('signup-pip', [
             'model' => $model,
         ]);
     }

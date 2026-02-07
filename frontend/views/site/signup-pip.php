@@ -135,18 +135,20 @@
         <span>Vault-Tec Authentication System</span>
     </div>
 
-    <?php $form = \yii\widgets\ActiveForm::begin(['id' => 'login-form']); ?>
+    <?php $form = \yii\widgets\ActiveForm::begin(['id' => 'form-signup']); ?>
 
-        <?= $form->field($model, 'username')->textInput(['autofocus' => true, 'placeholder' => 'Enter Vault ID (e.g. 101)']) ?>
-        <?= $form->field($model, 'password')->passwordInput() ?>
-        <button type="submit" class="btn btn-pip">Авторизация</button>
+    <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+
+    <?= $form->field($model, 'email') ?>
+
+    <?= $form->field($model, 'password')->passwordInput() ?>
+    <button type="submit" class="btn btn-pip">Регистрация</button>
     <?php \yii\widgets\ActiveForm::end(); ?>
 
     <div class="pip-footer">
         <p>Vault-Tec Industries © 2077</p>
         <p>System v3.1.5</p>
     </div>
-    <a href = "<?php echo \yii\helpers\Url::to(['/site/signup'])?>"  class="btn btn-pip">Регистрация</a>
 </div>
 
 <!-- Bootstrap JS Bundle with Popper -->
