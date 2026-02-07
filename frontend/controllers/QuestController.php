@@ -56,10 +56,10 @@ class QuestController extends FrontendController
 
         $isExist = QuestGameToUser::find()->where(['game_id' => $game->id, 'user_id' => Yii::$app->user->id])->one();
 
-        if ($isExist) {
-            $response['msg'] = 'Данный пользователь уже участвует в игре';
-            return json_encode($response);
-        }
+//        if ($isExist) {
+//            $response['msg'] = 'Данный пользователь уже участвует в игре';
+//            return json_encode($response);
+//        }
 
         $tour = Tours::getNextTour($game->id);
 
@@ -214,6 +214,13 @@ class QuestController extends FrontendController
         $timeEnd = QuestGameTour::getRemainingTime($_POST['tour_id']);
 
         $isEnd = $timeEnd == 0 ?  1 :  0;
+
+        $tour = Tours::getTourById($_POST['tour_id']);
+        if ($tour) {
+            if ($tour->time == 0 or is_null($tour->time)) {
+                $isEnd = 0;
+            }
+        }
 
         $count = Questions::getQuestionByTourCount($_POST['tour_id']);
 
