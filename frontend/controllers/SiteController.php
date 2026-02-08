@@ -148,6 +148,7 @@ class SiteController extends Controller
             return $this->goHome();
         }
 
+        $_SESSION['url_for_signup'] = $_SERVER['HTTP_REFERER'];
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
@@ -262,7 +263,15 @@ class SiteController extends Controller
     {
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
-            Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
+            if ($_SESSION['url_for_signup']) {
+                $lForm = new LoginForm();
+                $lForm->username = $model->username;
+                $lForm->password = $model->password;
+                if ($lForm->login()) {
+                    return $this->redirect($_SESSION['url_for_signup']);
+                }
+
+            }
             return $this->goHome();
         }
 
