@@ -148,10 +148,6 @@ class SiteController extends Controller
             return $this->goHome();
         }
 
-        var_dump(Yii::$app->request->referrer);
-        var_dump(getallheaders());
-        die();
-
         $_SESSION['url_for_signup'] = $_SERVER['HTTP_REFERER'];
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
