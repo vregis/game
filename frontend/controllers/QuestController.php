@@ -217,7 +217,7 @@ class QuestController extends FrontendController
 
         $tour = Tours::getTourById($_POST['tour_id']);
         if ($tour) {
-            if ($tour->time == 0 or is_null($tour->time)) {
+            if ($tour->time == 0 or is_null($tour->time) or $tour->time == '') {
                 $isEnd = 0;
             }
         }
