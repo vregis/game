@@ -265,7 +265,7 @@ class SiteController extends Controller
     {
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
-            if ($_SESSION['url_for_signup']) {
+            if (isset($_SESSION['url_for_signup']) && $_SESSION['url_for_signup']) {
                 $lForm = new LoginForm();
                 $lForm->username = $model->username;
                 $lForm->password = $model->password;
