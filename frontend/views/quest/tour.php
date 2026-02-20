@@ -1,12 +1,12 @@
 <h1>Тур №<?php echo $tour->number?></h1>
 <div style="margin-bottom:20px;" class="container-fluid">
     <div class="row">
-        <div style="margin-bottom:10px" class="col-lg-2 col-md-12 col-sm-12">
+      <!--  <div style="margin-bottom:10px" class="col-lg-2 col-md-12 col-sm-12">
             <a style="" onclick="return confirm('Вы точно хотите пропустить тур?')" class="btn btn-danger col-lg-12 col-md-12 col-sm-12 end-tour" href="<?php echo \yii\helpers\Url::to(['/quest/end-tour', 'id' => $tour->id])?>" data-tour-id="<?php echo $tour->id?>">Пропустить тур</a>
-        </div>
+        </div> -->
     </div>
 </div>
-<div class="col-12"><h3>Осталось: <span class="rem-time"></span> секунд</h3></div>
+<div class="col-12 hidden-timer" style="display:none"><h3>Осталось: <span class="rem-time"></span> секунд</h3></div>
 <div class="update-stat" data-end-url="<?php echo \yii\helpers\Url::to(['/quest/end-tour', 'id' => $tour->id])?>" data-url="<?php echo \yii\helpers\Url::to(['/quest/update-stat'])?>" data-prompt-url="<?php echo \yii\helpers\Url::to(['/quest/prompts'])?>"></div>
 <div style="margin-bottom:20px;" class="container-fluid">
     <div class="row">
@@ -123,6 +123,10 @@ $this->registerJs("
                         window.location.href = $('.update-stat').attr('data-end-url');
                     }
                     $('.rem-time').html(msg.time);
+                    if (msg.time == '00:00:00') {
+                        $('.hidden-timer').hide();
+                    } else {
+                        $('.hidden-timer').show();}
                     for (key in msg.questions) {
                         $('.correct-answer-id-'+key).find('span').text(msg.questions[key]);
                         $('.correct-answer-id-'+key).show();

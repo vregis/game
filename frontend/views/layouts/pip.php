@@ -231,7 +231,7 @@ $publishedRes = Yii::$app->assetManager->publish('@vendor/hail812/yii2-adminlte3
 <?php $this->beginBody() ?>
 
 <div class="wrapper">
-
+    <a class="btn" style="position:absolute; top:20px; right:20px; z-index:9999" href="/frontend/web/site/logout">Выйти</a>
     <!-- Content Wrapper. Contains page content -->
     <?= $this->render('content', ['content' => $content, 'assetDir' => $assetDir]) ?>
     <!-- /.content-wrapper -->
