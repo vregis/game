@@ -273,6 +273,13 @@ class SiteController extends Controller
                     return $this->redirect($_SESSION['url_for_signup']);
                 }
 
+            } else {
+                $lForm = new LoginForm();
+                $lForm->username = $model->username;
+                $lForm->password = $model->password;
+                if ($lForm->login()) {
+                    return $this->redirect('/');
+                }
             }
             return $this->goHome();
         }
