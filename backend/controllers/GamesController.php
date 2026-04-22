@@ -4,6 +4,8 @@ namespace backend\controllers;
 
 use common\models\CityGames;
 use common\models\Games;
+use common\models\QuestGameToUser;
+use common\models\StormGameToUser;
 use yii\data\ActiveDataProvider;
 use yii\db\Exception;
 use yii\web\Controller;
@@ -180,4 +182,26 @@ class GamesController extends BackendController
 
         return json_encode($response);
     }
+
+    public function actionStat($id)
+    {
+        $game = Games::findOne($id);
+
+        if (!$game) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
+        if ($game->question_type == 2) {
+            $games = StormGameToUser::find()->where(['game_id' => $id])->all();
+        } elseif ($game->question_type == 3) {
+            $games = QuestGameToUser::find()->where(['game_id' => $id])->all();
+        } else {
+            $games = null;
+        }
+
+        return $this->render('stat', [
+            'games' => $games,
+        ]);
+    }
+
 }

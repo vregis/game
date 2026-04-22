@@ -130,4 +130,59 @@ class Games extends generated\Games
             ->viaTable('{{%city_games}}', ['game_id' => 'id'])
             ->orderBy(['name' => SORT_ASC]);
     }
+
+
+    public static function dateDifference($date1, $date2, $format = 'array') {
+        // Создаем объекты DateTime
+        $datetime1 = \DateTime::createFromFormat('Y-m-d H:i:s', $date1);
+        $datetime2 = \DateTime::createFromFormat('Y-m-d H:i:s', $date2);
+
+        // Проверяем валидность дат
+        if (!$datetime1 || !$datetime2) {
+            return false;
+        }
+
+        // Вычисляем разницу
+        $interval = $datetime1->diff($datetime2);
+
+        // Форматируем результат в зависимости от параметра
+        switch ($format) {
+            case 'array':
+                return [
+                    'years'   => $interval->y,
+                    'months'  => $interval->m,
+                    'days'    => $interval->d,
+                    'hours'   => $interval->h,
+                    'minutes' => $interval->i,
+                    'seconds' => $interval->s,
+                    'total_days' => $interval->days,
+                    'invert'  => $interval->invert, // 1 если date2 > date1
+                    'sign'    => $interval->invert ? '-' : '+'
+                ];
+
+            case 'string':
+                $sign = $interval->invert ? 'минус ' : '';
+                return $sign . $interval->y . ' лет, ' .
+                    $interval->m . ' месяцев, ' .
+                    $interval->d . ' дней, ' .
+                    $interval->h . ' часов, ' .
+                    $interval->i . ' минут, ' .
+                    $interval->s . ' секунд';
+
+            case 'seconds':
+                return abs(strtotime($date2) - strtotime($date1));
+
+            case 'minutes':
+                return abs(strtotime($date2) - strtotime($date1)) / 60;
+
+            case 'hours':
+                return abs(strtotime($date2) - strtotime($date1)) / 3600;
+
+            case 'days':
+                return $interval->days;
+
+            default:
+                return $interval;
+        }
+    }
 }

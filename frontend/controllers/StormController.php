@@ -56,6 +56,7 @@ class StormController extends FrontendController
     }
     public function actionNewGame($id)
     {
+        $_SESSION['url_for_signup'] = $_SERVER['REQUEST_URI'];
         $game = Games::getGameByUrl($id);
 
         if (!$game) {

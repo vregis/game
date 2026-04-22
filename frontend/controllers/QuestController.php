@@ -79,7 +79,7 @@ class QuestController extends FrontendController
 
     public function actionNewGame($id)
     {
-
+        $_SESSION['url_for_signup'] = $_SERVER['REQUEST_URI'];
         if ($gameId = Session::getByKey(Session::CURRENT_GAME_ID)) {
             if ($g = StormGameToUser::find()->where(['id' => $gameId, 'user_id' => Yii::$app->user->id])->andWhere(['is', 'end_at', new \yii\db\Expression('null')])->one()) {
                 $tour = StormGameStats::switchTour();

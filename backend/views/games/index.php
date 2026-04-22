@@ -48,6 +48,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Constants::$gameQuestionTypes[$model->question_type];
                 }
             ],
+//                [
+//                        'format' => 'html',
+//                        'value' => function ($model) {
+//                            return "<a href='".Url::to(['/games/stat', 'id' => $model->id])."' class='btn btn-primary'>Статистика</a>";
+//                        }
+//                ],
             //'is_paid',
             //'price',
             //'created_at',

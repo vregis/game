@@ -148,7 +148,7 @@ class SiteController extends Controller
             return $this->goHome();
         }
 
-        if (isset($_SERVER['HTTP_REFERER'])) {
+        if (isset($_SERVER['HTTP_REFERER']) && !isset($_SESSION['url_for_signup'])) {
             $_SESSION['url_for_signup'] = $_SERVER['HTTP_REFERER'];
         }
         $model = new LoginForm();
@@ -265,12 +265,13 @@ class SiteController extends Controller
     {
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
-            if (isset($_SESSION['url_for_signup']) && $_SESSION['url_for_signup']) {
+          //  if (isset($_SESSION['url_for_signup']) && $_SESSION['url_for_signup']) {
+            if (isset($_SESSION['__returnUrl']) && strstr($_SESSION['__returnUrl'], 'new-game')) {
                 $lForm = new LoginForm();
                 $lForm->username = $model->username;
                 $lForm->password = $model->password;
                 if ($lForm->login()) {
-                    return $this->redirect($_SESSION['url_for_signup']);
+                    return $this->redirect($_SESSION['__returnUrl']);
                 }
 
             } else {
