@@ -10,6 +10,21 @@ use yii\db\Expression;
 class StormGameToUser extends \common\models\generated\StormGameToUser
 {
     public string $userName;
+    public $duration;
+
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'user_id' => 'User ID',
+            'team_id' => 'Team ID',
+            'game_id' => 'Game ID',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
+            'end_at' => 'Начало игры',
+            'start_at' => 'Конец игры',
+        ];
+    }
     public function behaviors()
     {
         return [
@@ -22,6 +37,11 @@ class StormGameToUser extends \common\models\generated\StormGameToUser
             [
                 'class' => TimestampBehavior::class,
                 'createdAtAttribute' => 'start_at',
+                'value' => new Expression('NOW()'),
+            ],
+            [
+                'class' => TimestampBehavior::class,
+                'createdAtAttribute' => 'real_created_at',
                 'value' => new Expression('NOW()'),
             ],
         ];
@@ -76,6 +96,13 @@ class StormGameToUser extends \common\models\generated\StormGameToUser
         $userId = Session::getUserId();
         $game = self::findOne(['id' => $gameId, 'user_id' => $userId]);
         $game->end_at = new Expression('NOW()');
+        $game->save();
+    }
+
+    public static function addBonus($bonus)
+    {
+        $game = self::findOne(['id' => Session::getByKey(Session::CURRENT_GAME_ID)]);
+        $game->bonus = $game->bonus + $bonus;
         $game->save();
     }
 

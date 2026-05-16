@@ -14,6 +14,9 @@ use Yii;
  * @property string|null $created_at
  * @property string|null $updated_at
  * @property string|null $end_at
+ * @property string|null $start_at
+ * @property string|null $real_created_at
+ * @property int|null $bonus
  *
  * @property Games $game
  */
@@ -33,8 +36,8 @@ class StormGameToUser extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'team_id', 'game_id'], 'integer'],
-            [['created_at', 'updated_at', 'end_at'], 'safe'],
+            [['user_id', 'team_id', 'game_id', 'bonus'], 'integer'],
+            [['created_at', 'updated_at', 'end_at', 'start_at', 'real_created_at'], 'safe'],
             [['game_id'], 'exist', 'skipOnError' => true, 'targetClass' => Games::class, 'targetAttribute' => ['game_id' => 'id']],
         ];
     }
@@ -52,6 +55,9 @@ class StormGameToUser extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'end_at' => 'End At',
+            'start_at' => 'Start At',
+            'real_created_at' => 'Real Created At',
+            'bonus' => 'Bonus',
         ];
     }
 

@@ -10,6 +10,8 @@ use yii\db\Expression;
 class QuestGameToUser extends \common\models\generated\QuestGameToUser
 {
 
+    public $duration;
+
     public function behaviors()
     {
         return [
@@ -36,5 +38,19 @@ class QuestGameToUser extends \common\models\generated\QuestGameToUser
     public static function getRealGameId(int $currentGameId)
     {
         return self::findOne(['id' => $currentGameId]);
+    }
+
+    public static function endGame()
+    {
+        $game = self::findOne(['id' => Session::getByKey(Session::CURRENT_GAME_ID)]);
+        $game->end_at = new Expression('NOW()');
+        $game->save();
+    }
+
+    public static function addBonus($bonus)
+    {
+        $game = self::findOne(['id' => Session::getByKey(Session::CURRENT_GAME_ID)]);
+        $game->bonus = $game->bonus + $bonus;
+        $game->save();
     }
 }

@@ -12,8 +12,11 @@ use Yii;
  * @property int $game_id
  * @property string|null $created_at
  * @property string|null $updated_at
+ * @property string|null $end_at
+ * @property int|null $bonus
  *
  * @property Games $game
+ * @property Games $game0
  */
 class QuestGameToUser extends \yii\db\ActiveRecord
 {
@@ -31,8 +34,9 @@ class QuestGameToUser extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'game_id'], 'integer'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['user_id', 'game_id', 'bonus'], 'integer'],
+            [['created_at', 'updated_at', 'end_at'], 'safe'],
+            [['game_id'], 'exist', 'skipOnError' => true, 'targetClass' => Games::class, 'targetAttribute' => ['game_id' => 'id']],
             [['game_id'], 'exist', 'skipOnError' => true, 'targetClass' => Games::class, 'targetAttribute' => ['game_id' => 'id']],
         ];
     }
@@ -48,6 +52,8 @@ class QuestGameToUser extends \yii\db\ActiveRecord
             'game_id' => 'Game ID',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'end_at' => 'End At',
+            'bonus' => 'Bonus',
         ];
     }
 
@@ -57,6 +63,16 @@ class QuestGameToUser extends \yii\db\ActiveRecord
      * @return \yii\db\ActiveQuery
      */
     public function getGame()
+    {
+        return $this->hasOne(Games::class, ['id' => 'game_id']);
+    }
+
+    /**
+     * Gets query for [[Game0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGame0()
     {
         return $this->hasOne(Games::class, ['id' => 'game_id']);
     }

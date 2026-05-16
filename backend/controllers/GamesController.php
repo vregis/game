@@ -192,14 +192,20 @@ class GamesController extends BackendController
         }
 
         if ($game->question_type == 2) {
-            $games = StormGameToUser::find()->where(['game_id' => $id])->all();
+            $games = Games::gameDurationStorm($game->id);
+            return $this->render('stat-storm', [
+                'games' => $games,
+            ]);
         } elseif ($game->question_type == 3) {
-            $games = QuestGameToUser::find()->where(['game_id' => $id])->all();
+            $games = Games::gameDurationQuest($game->id);
+            return $this->render('stat-quest', [
+                'games' => $games,
+            ]);
         } else {
             $games = null;
         }
 
-        return $this->render('stat', [
+        return $this->render('stat-empty', [
             'games' => $games,
         ]);
     }

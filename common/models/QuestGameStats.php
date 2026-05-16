@@ -143,6 +143,7 @@ class QuestGameStats extends \common\models\generated\QuestGameStats
             $bonus += $q->bonus;
         }
 
+        QuestGameToUser::addBonus($bonus);
         \Yii::$app->getDb()->createCommand('UPDATE `quest_game_tour` SET created_at = DATE_ADD(created_at, INTERVAL '.$bonus.' second) WHERE game_id = '.$gameId.' AND tour_id = '.$tourId.' AND user_id = '.$userId)->execute();
     }
 

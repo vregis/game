@@ -251,6 +251,10 @@ class QuestController extends FrontendController
         $allStat = QuestGameStats::getAllStats($id);
         $nextTour = Tours::getNextTour($tour->game_id, $tour->number);
 
+        if (!$nextTour) {
+            QuestGameToUser::endGame();
+        }
+
         return $this->render('end-tour', ['allStat' => $allStat, 'nextTour' => $nextTour]);
     }
 

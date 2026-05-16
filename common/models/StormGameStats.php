@@ -154,6 +154,7 @@ class StormGameStats extends \common\models\generated\StormGameStats
             $bonus += $q->bonus;
         }
 
+       // \common\models\StormGameToUser::addBonus($bonus);
       //  \Yii::$app->getDb()->createCommand('UPDATE `storm_game_to_user` SET created_at = DATE_ADD(created_at, INTERVAL '.$bonus.' second) WHERE id = '.$gameId.' AND user_id = '.$userId)->execute();
     }
 

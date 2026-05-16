@@ -9,6 +9,8 @@ use yii\db\Expression;
 class QuestGameTour extends \common\models\generated\QuestGameTour
 {
 
+    public $userName;
+    public $duration;
     public function behaviors()
     {
         return [
@@ -65,6 +67,21 @@ class QuestGameTour extends \common\models\generated\QuestGameTour
         }
 
         return $tour->time - $gameTime;
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'game_id' => 'Game ID',
+            'user_id' => 'User ID',
+            'tour_id' => 'Tour ID',
+            'team_id' => 'Team ID',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
+            'end_at' => 'Начало игры',
+            'start_at' => 'Конец игры',
+        ];
     }
 
 }

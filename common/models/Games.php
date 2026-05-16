@@ -6,6 +6,7 @@ use backend\helpers\Constants;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
+use yii\db\Query;
 
 /**
  * This is the model class for table "games".
@@ -184,5 +185,101 @@ class Games extends generated\Games
             default:
                 return $interval;
         }
+    }
+
+    public static function gameDurationStorm($gameId)
+    {
+        $query = (new Query())
+            ->select([
+                'user.username as userName',
+                'start_at',
+                'end_at',
+                'bonus',
+                'SEC_TO_TIME(TIMESTAMPDIFF(SECOND, start_at, end_at)) AS duration'
+            ])
+            ->from('storm_game_to_user')
+          //  ->where(['IS NOT', 'end_at', null])
+            ->leftJoin('user', 'user.id = storm_game_to_user.user_id')
+            ->andWhere(['game_id' => $gameId])
+            ->andWhere(['IS NOT', 'start_at', null]);
+           // ->orderBy('TIMESTAMPDIFF(SECOND, start_at, end_at) ASC');
+
+        $dataProvider = new \yii\data\ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 20,
+                'pageSizeParam' => 'per-page',
+                'pageParam' => 'page',
+                'forcePageParam' => false,
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'duration' => SORT_ASC,
+                ],
+                'attributes' => [
+                    'start_at',
+                    'end_at',
+                    'bonus',
+                    'duration' => [
+                        'asc' => [
+                            'CASE WHEN TIMESTAMPDIFF(SECOND, start_at, end_at) IS NULL THEN 1 ELSE 0 END' => SORT_ASC,
+                            'TIMESTAMPDIFF(SECOND, start_at, end_at)' => SORT_ASC
+                        ],
+                        'desc' => [
+                            'CASE WHEN TIMESTAMPDIFF(SECOND, start_at, end_at) IS NULL THEN 1 ELSE 0 END' => SORT_ASC,
+                            'TIMESTAMPDIFF(SECOND, start_at, end_at)' => SORT_DESC
+                        ],
+                    ]
+                ]
+            ]
+        ]);
+
+        return $dataProvider;
+    }
+
+    public static function gameDurationQuest($gameId)
+    {
+        $query = (new Query())
+            ->select([
+                'user.username as userName',
+                'quest_game_to_user.*',
+                'SEC_TO_TIME(TIMESTAMPDIFF(SECOND, quest_game_to_user.created_at, end_at)) AS duration'
+            ])
+            ->from('quest_game_to_user')
+            //  ->where(['IS NOT', 'end_at', null])
+            ->leftJoin('user', 'user.id = quest_game_to_user.user_id')
+            ->andWhere(['quest_game_to_user.game_id' => $gameId])
+            ->andWhere(['IS NOT', 'quest_game_to_user.created_at', null]);
+        ;
+        // ->orderBy('TIMESTAMPDIFF(SECOND, start_at, end_at) ASC');
+
+        $dataProvider = new \yii\data\ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'duration' => SORT_ASC,
+                ],
+                'attributes' => [
+                    'created_at',
+                    'end_at',
+                    'bonus',
+                    'duration' => [
+                        'asc' => [
+                            'CASE WHEN TIMESTAMPDIFF(SECOND, quest_game_to_user.created_at, end_at) IS NULL THEN 1 ELSE 0 END' => SORT_ASC,
+                            'TIMESTAMPDIFF(SECOND, quest_game_to_user.created_at, end_at)' => SORT_ASC
+                        ],
+                        'desc' => [
+                            'CASE WHEN TIMESTAMPDIFF(SECOND, quest_game_to_user.created_at, end_at) IS NULL THEN 1 ELSE 0 END' => SORT_ASC,
+                            'TIMESTAMPDIFF(SECOND, quest_game_to_user.created_at, end_at)' => SORT_DESC
+                        ],
+                    ]
+                ]
+            ]
+        ]);
+
+        return $dataProvider;
     }
 }
