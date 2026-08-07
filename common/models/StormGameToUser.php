@@ -106,4 +106,15 @@ class StormGameToUser extends \common\models\generated\StormGameToUser
         $game->save();
     }
 
+    public static function isTourAvailable(int $tourId): bool
+    {
+        $game = self::findOne(['id' => Session::getByKey(Session::CURRENT_GAME_ID)]);
+
+        if (!$game) {
+            return false;
+        }
+
+        return Tours::find()->where(['id' => $tourId, 'game_id' => $game->game_id])->exists();
+    }
+
 }

@@ -155,6 +155,9 @@ class QuestController extends FrontendController
 
     public function actionTour($id)
     {
+        if (!QuestGameTour::isTourAvailable($id)) {
+            die('Тур не доступен');
+        }
         $tour = Tours::getTourById($id);
         if (!$tour) {
             throw new NotFoundHttpException('Tour not found');

@@ -113,6 +113,10 @@ class StormController extends FrontendController
             throw new NotFoundHttpException('Tour not found');
         }
 
+        if (!StormGameToUser::isTourAvailable($id)) {
+            die('Тур не доступен');
+        }
+
         $tours = Tours::getToursByGameId($tour->game_id);
 
         if (!$tours) {

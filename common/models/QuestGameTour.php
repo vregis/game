@@ -84,4 +84,9 @@ class QuestGameTour extends \common\models\generated\QuestGameTour
         ];
     }
 
+    public static function isTourAvailable(int $tourId): bool
+    {
+        return self::find()->where(['tour_id' => $tourId, 'user_id' => Session::getUserId(), 'end_at' => null, 'game_id' => Session::getByKey(Session::CURRENT_GAME_ID)])->exists();
+    }
+
 }

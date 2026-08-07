@@ -158,7 +158,7 @@
             <input class="form-control answer" type="text">
         </div>
         <div style="margin-bottom:10px" class="col-lg-2 col-md-12 col-sm-12">
-            <button class="btn btn-success col-lg-12 col-md-12 col-sm-12 send-answer" data-url="<?php echo \yii\helpers\Url::to(['/storm/send-answer'])?>" data-tour-id="<?php echo $tour->id?>">Ответ</button>
+            <button id="enter" class="btn btn-success col-lg-12 col-md-12 col-sm-12 send-answer" data-url="<?php echo \yii\helpers\Url::to(['/storm/send-answer'])?>" data-tour-id="<?php echo $tour->id?>">Ответ</button>
         </div>
         <div style="margin-bottom:10px" class="col-lg-4 col-md-12 col-sm-12">
             <div style="color:green; display:none; margin-top:4px" class="correct-answer">Верно</div>
@@ -228,6 +228,15 @@
 
 <?php
 $this->registerJs("
+    document.addEventListener('keydown', function(event) {
+  if (event.key === 'Enter') {
+    // Проверяем, что фокус не на кнопке (чтобы избежать двойного срабатывания)
+    if (event.target.tagName !== 'BUTTON') {
+      event.preventDefault();
+      document.getElementById('enter').click();
+    }
+  }
+});
     
     $('.send-answer').click(function(){
         
