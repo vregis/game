@@ -21,7 +21,7 @@ class FrontendController extends Controller
             } elseif ($_GET['design'] == 2) {
                 $this->layout = 'mario';
             } elseif ($_GET['design'] == 3) {
-                $this->layout = 'main';
+                $this->layout = 'front2';
             }
         }
         $userId = Session::getUserId() ?? null;
