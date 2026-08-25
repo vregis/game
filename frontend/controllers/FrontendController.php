@@ -15,6 +15,15 @@ class FrontendController extends Controller
     {
         parent::__construct($id, $module, $config = []);
         $this->layout = 'pip';
+        if (isset($_GET['design'])) {
+            if ($_GET['design'] == 1) {
+                $this->layout = 'netral';
+            } elseif ($_GET['design'] == 2) {
+                $this->layout = 'mario';
+            } elseif ($_GET['design'] == 3) {
+                $this->layout = 'main';
+            }
+        }
         $userId = Session::getUserId() ?? null;
 
         if ($userId === null && !strstr($_SERVER['REQUEST_URI'], '/new-game?id')) {
