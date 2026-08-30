@@ -133,7 +133,7 @@ class SiteController extends Controller
 
 
         $city = City::find()->all();
-        return $this->render('landing-pip', ['city' => $city]);
+        return $this->render('landing-new', ['city' => $city]);
     }
 
     /**
@@ -158,7 +158,7 @@ class SiteController extends Controller
 
         $model->password = '';
 
-        return $this->render('login-pip', [
+        return $this->render('login-new', [
             'model' => $model,
         ]);
     }
