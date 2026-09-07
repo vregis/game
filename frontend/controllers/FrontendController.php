@@ -14,7 +14,7 @@ class FrontendController extends Controller
     public function __construct($id, $module, $config = [])
     {
         parent::__construct($id, $module, $config = []);
-        $this->layout = 'pip';
+        $this->layout = 'mario';
         if (isset($_GET['design'])) {
             if ($_GET['design'] == 1) {
                 $this->layout = 'netral';
