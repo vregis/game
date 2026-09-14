@@ -271,7 +271,8 @@
         }
 
         .footer-content {
-            display: flex;
+            //display: flex;
+            display: none;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
@@ -289,6 +290,7 @@
         }
 
         .year {
+            display: none;
             font-size: 16px;
             font-weight: 600;
             color: #2563eb;
@@ -333,20 +335,18 @@
 <!-- ===== ХЕДЕР ===== -->
 <header>
     <div class="container">
-        <div class="header-content">
-            <div class="logo">
-                <!-- Логотип -->
-                <div class="login-logo">
-                    <img src="/uploads/logo.png" alt="Логотип">
+        <div class="content-wrapper">
+            <div class="header-content">
+                <div class="logo">
+                    <!-- Логотип -->
+                    <div class="login-logo">
+                        <img src="/uploads/logo.png" alt="Логотип">
+                    </div>
+                    <div class="logo-text">
+                        <h1>Забава</h1>
+                        <p>Приключения в реальности</p>
+                    </div>
                 </div>
-                <div class="logo-text">
-                    <h1>Забава</h1>
-                    <p>Система управления городами</p>
-                </div>
-            </div>
-            <div class="phone">
-                <div class="phone-label">Служба поддержки</div>
-                <div class="phone-number">911</div>
             </div>
         </div>
     </div>
@@ -371,9 +371,9 @@
                     <?php endif; ?>
                 </select>
 
-                <div class="info-text">
-                    После выбора города с вами свяжется представитель для обсуждения деталей.
-                </div>
+                <!-- <div class="info-text">
+                   После выбора города с вами свяжется представитель для обсуждения деталей.
+                </div>-->
             </section>
 
             <!-- СПИСОК ИГР -->
@@ -383,7 +383,7 @@
                     <li>Защита от ядерных, биологических и химических угроз</li>
                 </ul>
 
-                <div class="status-block">
+                <div style="display:none" class="status-block">
                     <p><strong>Забава:</strong> Приключения в реальности</p>
                 </div>
             </section>
