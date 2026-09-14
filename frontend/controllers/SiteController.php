@@ -103,12 +103,12 @@ class SiteController extends Controller
 
             if ($g = StormGameToUser::find()->where(['id' => $gameId, 'user_id' => Yii::$app->user->id])->andWhere(['is', 'end_at', new \yii\db\Expression('null')])->one()) {
                 $tour = StormGameStats::switchTour();
-                $this->redirect('/frontend/web/storm/tour?id=' . $tour);
+                return $this->redirect('/frontend/web/storm/tour?id=' . $tour);
             } else {
                 $tour = QuestGameTour::find()->where(['game_id' => Session::getByKey(Session::CURRENT_GAME_ID)])->orderBy('tour_id DESC')->one();
                 if ($tour) {
                     if ($tour->end_at == null) {
-                        $this->redirect('/frontend/web/quest/tour?id=' . $tour->tour_id);
+                        return $this->redirect('/frontend/web/quest/tour?id=' . $tour->tour_id);
                     }
                     $game = QuestGameToUser::getRealGameId($tour->game_id);
                     if ($game) {
@@ -117,7 +117,7 @@ class SiteController extends Controller
                         $i = 0;
                         foreach ($lastTourGame as $tourGame) {
                             if ($i == 1) {
-                                $this->redirect('/frontend/web/quest/new-tour?id=' . $tourGame->id);
+                                return $this->redirect('/frontend/web/quest/new-tour?id=' . $tourGame->id);
                             }
                             if ($tourGame->id == $tour->tour_id) {
                                 $i = 1;
