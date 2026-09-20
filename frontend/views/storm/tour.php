@@ -128,6 +128,12 @@
     .shadow {
         box-shadow: var(--bs-refresh-box-shadow) !important;
     }
+    .sticky-header {
+        position: sticky;
+        top: 5px;
+        z-index: 1000; /* чтобы был поверх другого контента */
+        background: white; /* обязательно, иначе контент будет просвечивать */
+    }
 </style>
 <h1><?php echo $tour->name?></h1>
 <div class="accordion" id="accordionExample1">
@@ -152,8 +158,9 @@
 </div>
 <div class="col-12"><h3>Осталось: <span class="rem-time"></span> секунд</h3></div>
 <div class="update-stat"  data-url="<?php echo \yii\helpers\Url::to(['/storm/update-stat'])?>" data-end-url="<?php echo \yii\helpers\Url::to(['/storm/game-end'])?>" data-tour-url="<?php echo \yii\helpers\Url::to(['/storm/tour'])?>" data-prompt-url="<?php echo \yii\helpers\Url::to(['/storm/prompts'])?>"></div>
+<div class = "sticky-header">
 <div style="margin-bottom:20px;" class="container-fluid">
-    <div class="row">
+    <div class="row" style="margin-top:10px">
         <div style="margin-bottom:10px" class="col-lg-4 col-md-12 col-sm-12">
             <input class="form-control answer" type="text">
         </div>
@@ -165,6 +172,7 @@
             <div style="color:red; margin-top:4px; display: none" class="incorrect-answer">Неверно</div>
         </div>
     </div>
+</div>
 </div>
 
 <?php if (isset($tour->text)):?>

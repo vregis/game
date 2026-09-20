@@ -1,3 +1,11 @@
+<style>
+    .sticky-header {
+        position: sticky;
+        top: 0;
+        z-index: 1000; /* чтобы был поверх другого контента */
+        background: white; /* обязательно, иначе контент будет просвечивать */
+    }
+</style
 <h1>Тур №<?php echo $tour->number?></h1>
 <div style="margin-bottom:20px;" class="container-fluid">
     <div class="row">
@@ -6,19 +14,21 @@
         </div> -->
     </div>
 </div>
-<div class="col-12 hidden-timer" style="display:none"><h3>Осталось: <span class="rem-time"></span> секунд</h3></div>
-<div class="update-stat" data-end-url="<?php echo \yii\helpers\Url::to(['/quest/end-tour', 'id' => $tour->id])?>" data-url="<?php echo \yii\helpers\Url::to(['/quest/update-stat'])?>" data-prompt-url="<?php echo \yii\helpers\Url::to(['/quest/prompts'])?>"></div>
-<div style="margin-bottom:20px;" class="container-fluid">
-    <div class="row">
-        <div style="margin-bottom:10px" class="col-lg-4 col-md-12 col-sm-12">
-            <input class="form-control answer" type="text">
-        </div>
-        <div style="margin-bottom:10px" class="col-lg-2 col-md-12 col-sm-12">
-            <button id="enter" class="btn btn-success col-lg-12 col-md-12 col-sm-12 send-answer" data-url="<?php echo \yii\helpers\Url::to(['/quest/send-answer'])?>" data-tour-id="<?php echo $tour->id?>">Ответ</button>
-        </div>
-        <div style="margin-bottom:10px" class="col-lg-4 col-md-12 col-sm-12">
-            <div style="color:green; display:none; margin-top:4px" class="correct-answer">Верно</div>
-            <div style="color:red; margin-top:4px; display: none" class="incorrect-answer">Неверно</div>
+<div class="sticky-header">
+    <div class="col-12 hidden-timer" style="display:none"><h3>Осталось: <span class="rem-time"></span> секунд</h3></div>
+    <div class="update-stat" data-end-url="<?php echo \yii\helpers\Url::to(['/quest/end-tour', 'id' => $tour->id])?>" data-url="<?php echo \yii\helpers\Url::to(['/quest/update-stat'])?>" data-prompt-url="<?php echo \yii\helpers\Url::to(['/quest/prompts'])?>"></div>
+    <div style="margin-bottom:20px;" class="container-fluid">
+        <div class="row">
+            <div style="margin-bottom:10px" class="col-lg-4 col-md-12 col-sm-12">
+                <input class="form-control answer" type="text">
+            </div>
+            <div style="margin-bottom:10px" class="col-lg-2 col-md-12 col-sm-12">
+                <button id="enter" class="btn btn-success col-lg-12 col-md-12 col-sm-12 send-answer" data-url="<?php echo \yii\helpers\Url::to(['/quest/send-answer'])?>" data-tour-id="<?php echo $tour->id?>">Ответ</button>
+            </div>
+            <div style="margin-bottom:10px" class="col-lg-4 col-md-12 col-sm-12">
+                <div style="color:green; display:none; margin-top:4px" class="correct-answer">Верно</div>
+                <div style="color:red; margin-top:4px; display: none" class="incorrect-answer">Неверно</div>
+            </div>
         </div>
     </div>
 </div>
