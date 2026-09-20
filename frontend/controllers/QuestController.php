@@ -167,7 +167,8 @@ class QuestController extends FrontendController
 
 
         if (!$questions) {
-            throw new NotFoundHttpException('Questions not found');
+            $questions = [];
+            //throw new NotFoundHttpException('Questions not found');
         }
 
         return $this->render('tour', ['tour' => $tour, 'questions' => $questions]);
@@ -227,7 +228,7 @@ class QuestController extends FrontendController
 
         $count = Questions::getQuestionByTourCount($_POST['tour_id']);
 
-        if ($count === count($stat)) {
+        if ($count === count($stat) && $count != 0) {
             $isEnd = 1;
         }
 
