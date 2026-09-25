@@ -643,12 +643,32 @@ class SiteController extends Controller
         $model = new FeedbackForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-             Yii::$app->mailer->compose()
-                 ->setTo('deadismay@yandex.ru')
-                 ->setFrom(Yii::$app->params['adminEmail'])
-                 ->setSubject('Сообщение об ошибке')
-                 ->setTextBody($model->message)
-                 ->send();
+//             Yii::$app->mailer->compose()
+//                 ->setTo('')
+//                 ->setFrom(Yii::$app->params['adminEmail'])
+//                 ->setSubject('Сообщение об ошибке')
+//                 ->setTextBody($model->message)
+//                 ->send();
+
+
+            $to      = 'deadismay@yandex.ru';
+            $subject = 'Сообщение об ошибке';
+
+            $body = "Имя: {$model->name}\n\n"
+                . "Сообщение:\n{$model->message}\n";
+
+            $headersString =
+                "From: vregis@mail.ru"  . "\r\n" .
+                "Reply-To: vregis@mail.ru"  . "\r\n" .
+                "Content-Type: text/plain; charset=UTF-8\r\n" .
+                "MIME-Version: 1.0\r\n";
+
+            mail(
+                $to,
+                '=?UTF-8?B?' . base64_encode($subject) . '?=',
+                $body,
+                $headersString
+            );
 
             return $this->refresh();
         }

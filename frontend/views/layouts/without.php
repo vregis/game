@@ -609,8 +609,6 @@ $user = Yii::$app->user->identity;
 
                     <nav class="nav">
                         <?php if (!Yii::$app->user->isGuest): ?>
-                            <a href="<?= Url::to(['/site/index']) ?>" class="nav-link">Главная</a>
-                            <a href="<?= Url::to(['/game/index']) ?>" class="nav-link">Игры</a>
 
                             <div class="user-menu" id="userMenu">
                                 <button type="button" class="user-menu-toggle" onclick="document.getElementById('userMenu').classList.toggle('open')">
