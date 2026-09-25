@@ -15,7 +15,7 @@
     </div>
 </div>
 <div class="sticky-header">
-    <div class="col-12 hidden-timer" style="display:none"><h3>Осталось: <span class="rem-time"></span> секунд</h3></div>
+    <div class="container-fluid col-12 hidden-timer" style="display:none; padding: 5px"><h3>Осталось: <span class="rem-time"></span> секунд</h3></div>
     <div class="update-stat" data-end-url="<?php echo \yii\helpers\Url::to(['/quest/end-tour', 'id' => $tour->id])?>" data-url="<?php echo \yii\helpers\Url::to(['/quest/update-stat'])?>" data-prompt-url="<?php echo \yii\helpers\Url::to(['/quest/prompts'])?>"></div>
     <div style="margin-bottom:20px;" class="container-fluid">
         <div class="row">

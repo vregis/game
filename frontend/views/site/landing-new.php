@@ -263,6 +263,7 @@
         }
 
         /* ===== ФУТЕР ===== */
+        /* ===== ФУТЕР ===== */
         footer {
             background: #ffffff;
             border-top: 1px solid #e2e8f0;
@@ -270,13 +271,48 @@
             margin-top: auto;
         }
 
-        .footer-content {
-            //display: flex;
-            display: none;
-            justify-content: space-between;
+        .btn {
+            display: inline-flex;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
+            justify-content: center;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            border: 1.5px solid transparent;
+            transition: all 0.2s;
+            letter-spacing: -0.1px;
+            line-height: 1;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
+            transform: translateY(-1px);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* ===== АДАПТИВ (часть про футер) ===== */
+        @media (max-width: 640px) {
+            /* ...остальное как было... */
+
+            .footer-content {
+                /* ничего особенного — кнопка и так по центру */
+            }
         }
 
         .copyright {
@@ -392,14 +428,10 @@
     </div>
 </main>
 
-<!-- ===== ФУТЕР ===== -->
 <footer>
     <div class="container">
         <div class="footer-content">
-            <div class="copyright">
-                <strong></strong> © <span id="current-year">2077</span>. Все права защищены.
-            </div>
-            <div class="year" id="dynamic-year">2077</div>
+            <a href="<?php echo \yii\helpers\Url::to(['/site/feedback'])?>" target="_blank" class="btn btn-primary">Сообщить об ошибке</a>
         </div>
     </div>
 </footer>
@@ -409,9 +441,6 @@
     document.addEventListener('DOMContentLoaded', function() {
 
         // Год в футере
-        const year = new Date().getFullYear();
-        document.getElementById('current-year').textContent = year;
-        document.getElementById('dynamic-year').textContent = year;
 
         const select = document.getElementById('city-select');
 

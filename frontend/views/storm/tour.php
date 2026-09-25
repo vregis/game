@@ -129,6 +129,7 @@
         box-shadow: var(--bs-refresh-box-shadow) !important;
     }
     .sticky-header {
+        padding:10px;
         position: sticky;
         top: 5px;
         z-index: 1000; /* чтобы был поверх другого контента */

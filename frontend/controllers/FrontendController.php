@@ -13,8 +13,9 @@ class FrontendController extends Controller
 {
     public function __construct($id, $module, $config = [])
     {
+        $this->enableCsrfValidation = false;
         parent::__construct($id, $module, $config = []);
-        $this->layout = 'mario';
+        $this->layout = 'without';
         if (isset($_GET['design'])) {
             if ($_GET['design'] == 1) {
                 $this->layout = 'netral';
