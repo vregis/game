@@ -13,7 +13,22 @@ $this->title = 'Обратная связь';
     <h1>Сообщить об ошибке</h1>
 </div>
 
-
+<?php foreach (Yii::$app->session->getAllFlashes() as $type => $messages): ?>
+    <?php foreach ((array)$messages as $msg): ?>
+        <?php
+        $class = 'alert-info';
+        switch ($type) {
+            case 'success': $class = 'alert-success'; break;
+            case 'error':
+            case 'danger':  $class = 'alert-danger';  break;
+            case 'warning': $class = 'alert-warning'; break;
+        }
+        ?>
+        <div class="alert <?= $class ?>">
+            <?= \yii\helpers\Html::encode($msg) ?>
+        </div>
+    <?php endforeach; ?>
+<?php endforeach; ?>
 <div class="card" style="max-width: 720px; margin: 0 auto;">
     <div class="card-body">
         <?php $form = ActiveForm::begin([

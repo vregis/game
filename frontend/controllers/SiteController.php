@@ -651,7 +651,7 @@ class SiteController extends Controller
 //                 ->send();
 
 
-            $to      = 'deadismay@yandex.ru';
+            $to      = 'deadismay@yandex.com';
             $subject = 'Сообщение об ошибке';
 
             $body = "Имя: {$model->name}\n\n"
@@ -663,12 +663,17 @@ class SiteController extends Controller
                 "Content-Type: text/plain; charset=UTF-8\r\n" .
                 "MIME-Version: 1.0\r\n";
 
+            if (
             mail(
                 $to,
                 '=?UTF-8?B?' . base64_encode($subject) . '?=',
                 $body,
                 $headersString
-            );
+            )) {
+                Yii::$app->session->setFlash('success', 'Спасибо! Ваша заявка отправлена.');
+            } else {
+                Yii::$app->session->setFlash('error', 'Ошибка, попробуйте позже');
+            }
 
             return $this->refresh();
         }
