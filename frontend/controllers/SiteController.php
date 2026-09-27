@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 use common\models\Answers;
 use common\models\City;
+use common\models\Feedback;
 use common\models\FeedbackForm;
 use common\models\Games;
 use common\models\GameToUser;
@@ -650,8 +651,14 @@ class SiteController extends Controller
 //                 ->setTextBody($model->message)
 //                 ->send();
 
+            $feedback = new Feedback();
+            $feedback->name = $model->name;
+            $feedback->text = $model->message;
+            $feedback->save();
 
-            $to      = 'deadismay@yandex.com';
+
+           // $to      = 'deadismay@yandex.com';
+            $to      = 'vregis@mail.ru';
             $subject = 'Сообщение об ошибке';
 
             $body = "Имя: {$model->name}\n\n"

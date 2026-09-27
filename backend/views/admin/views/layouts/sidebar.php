@@ -42,6 +42,7 @@ use backend\helpers\Constants;
                 'items' => [
                     ['label' => Constants::GAMES,  'icon' => 'file-code', 'url' => ['/games']],
                     ['label' => Constants::CITY,  'icon' => 'file-code', 'url' => ['/city']],
+                    ['label' => 'Ошибки',  'icon' => 'file-code', 'url' => ['/feedback']],
                     ['label' => 'Gii',  'icon' => 'file-code', 'url' => ['/gii'], 'target' => '_blank'],
 //                    [
 //                        'label' => 'Starter Pages',
