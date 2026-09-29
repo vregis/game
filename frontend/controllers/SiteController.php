@@ -689,4 +689,33 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+
+    public function actionStat($id)
+    {
+        $game = Games::findOne($id);
+
+        if (!$game) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
+        if ($game->question_type == 2) {
+            $games = Games::gameDurationStorm($game->id);
+            return $this->render('stat-storm', [
+                'games' => $games,
+            ]);
+        } elseif ($game->question_type == 3) {
+            $games = Games::gameDurationQuest($game->id);
+            return $this->render('stat-quest', [
+                'games' => $games,
+            ]);
+        } else {
+            $games = null;
+        }
+
+        return $this->render('stat-empty', [
+            'games' => $games,
+        ]);
+    }
+
+
 }

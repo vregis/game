@@ -1,11 +1,6 @@
 <?php
 use yii\grid\GridView;
 
-?>
-
-    Внешняя ссылка на статистику: <a target="_blank" href="/frontend/web/site/stat?id=<?php echo $id?>">Открыть</a>
-
-<?php
 echo  GridView::widget([
         'dataProvider' => $games,
         'columns' => [
@@ -18,7 +13,7 @@ echo  GridView::widget([
                 'headerOptions' => ['class' => 'text-center'],
             ],
             [
-                'attribute' => 'created_at',
+                'attribute' => 'start_at',
                 'label' => 'Начало игры',
                 'format' => 'datetime',
                 'contentOptions' => ['class' => 'text-center'],

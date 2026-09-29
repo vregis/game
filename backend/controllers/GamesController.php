@@ -195,11 +195,13 @@ class GamesController extends BackendController
             $games = Games::gameDurationStorm($game->id);
             return $this->render('stat-storm', [
                 'games' => $games,
+                'id' => $game->id
             ]);
         } elseif ($game->question_type == 3) {
             $games = Games::gameDurationQuest($game->id);
             return $this->render('stat-quest', [
                 'games' => $games,
+                'id' => $game->id
             ]);
         } else {
             $games = null;
