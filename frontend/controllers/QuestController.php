@@ -268,8 +268,9 @@ class QuestController extends FrontendController
         $realGameId = QuestGameToUser::getRealGameId($gameId);
         $tourList = Tours::getToursByGameId($realGameId->game_id);
         $correctAnswers = QuestGameStats::getCorrectAnswers();
+        $game = Games::getGameById($gameId->game_id);
 
-        return $this->render('end-game', ['tourList' => $tourList, 'correctAnswers' => $correctAnswers]);
+        return $this->render('end-game', ['tourList' => $tourList, 'correctAnswers' => $correctAnswers, 'game' => $game]);
     }
 
     public function actionPrompts()

@@ -21,6 +21,7 @@ use Yii;
  *
  * @property Games $game
  * @property Questions[] $questions
+ * @property TourAttachments[] $tourAttachments
  */
 class Tours extends \yii\db\ActiveRecord
 {
@@ -85,5 +86,15 @@ class Tours extends \yii\db\ActiveRecord
     public function getQuestions()
     {
         return $this->hasMany(Questions::class, ['tour_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[TourAttachments]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTourAttachments()
+    {
+        return $this->hasMany(TourAttachments::class, ['tour_id' => 'id']);
     }
 }

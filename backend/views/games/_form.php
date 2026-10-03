@@ -87,6 +87,45 @@ use yii\widgets\ActiveForm;
             ]
         );
     ?>
+
+    <?php
+    echo $form->field($model, 'end_text')->widget(
+        \Itstructure\CKEditor\CKEditor::className(),
+        [
+            'preset' => 'custom',
+            'clientOptions' => [
+                'toolbarGroups' => [
+                    [
+                        'name' => 'undo'
+                    ],
+                    [
+                        'name' => 'basicstyles',
+                        'groups' => ['basicstyles', 'cleanup']
+                    ],
+                    [
+                        'name' => 'colors'
+                    ],
+                    [
+                        'name' => 'links',
+                        'groups' => ['links', 'insert']
+                    ],
+                    [
+                        'name' => 'others',
+                        'groups' => ['others', 'about']
+                    ],
+                ],
+                'filebrowserBrowseUrl' => '/ckfinder/ckfinder.html',
+                'filebrowserImageBrowseUrl' => '/ckfinder/ckfinder.html?type=Images',
+                'filebrowserUploadUrl' => '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+                'filebrowserImageUploadUrl' => '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+                'filebrowserWindowWidth' => '1000',
+                'filebrowserWindowHeight' => '700',
+                'allowedContent' => true,
+                'language' => 'en',
+            ]
+        ]
+    );
+    ?>
     <div class="form-group">
         <?= Html::submitButton('Сохранить игру', ['class' => 'btn btn-success']) ?>
     </div>

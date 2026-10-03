@@ -33,6 +33,15 @@
     </div>
 </div>
 <div>
+    <?php if ($attachments = $tour->tourAttachments):?>
+    <?php foreach ($attachments as $a):?>
+    <?php if ($a->type === \common\models\helpers\UploadFileHelper::ATTACHMENT_IMAGE_ID):?>
+        <div class="attachments">
+            <img class="img-fluid" height="100" src="/uploads/tour/<?=\common\models\helpers\UploadFileHelper::ATTACHMENT_IMAGE?>/<?=$tour->id?>/<?=$a->url?>">
+        </div>
+    <?php endif;?>
+    <?php endforeach;?>
+    <?php endif;?>
     <?php if (isset($tour->text)):?>
     <?php echo $tour->text?>
     <?php endif;?>

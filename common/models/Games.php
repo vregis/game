@@ -32,7 +32,7 @@ class Games extends generated\Games
             [['name'], 'required'],
             [['game_type', 'question_type', 'is_paid', 'price', 'public', 'time'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
-            [['name', 'url', 'text'], 'string'],
+            [['name', 'url', 'text', 'end_text'], 'string'],
             [['name'], 'unique'],
         ];
     }

@@ -3,8 +3,12 @@
 namespace backend\controllers;
 
 use common\models\Games;
+use common\models\helpers\UploadFileHelper;
+use common\models\TourAttachments;
 use common\models\Tours;
 use yii\data\ActiveDataProvider;
+use yii\db\Exception;
+use yii\db\StaleObjectException;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -154,4 +158,94 @@ class ToursController extends BackendController
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    /**
+     * @throws Exception
+     */
+    public function actionAddImage()
+    {
+        $response['success'] = false;
+
+        $response['msg'] = $this->checkFile($_POST, $_FILES);
+
+        if ($response['msg'] != '') {
+            return json_encode($response);
+        }
+
+        if (empty($_FILES['file']['type']) or $_FILES['file']['type'] != 'image/jpeg') {
+            $response['msg'] = 'Неверный формат файла. Загрузите jpg файл';
+            return json_encode($response);
+        }
+
+        if ($_FILES['file']['size'] > UploadFileHelper::MAX_UPLOAD_IMAGE_SIZE) {
+            $response['msg'] = 'Размер файла не должен превышать 5 МБ';
+            return json_encode($response);
+        }
+
+        $image = new TourAttachments();
+        $image->tour_id = $_POST['id'];
+
+        if ($image->addImage($_FILES['file']['tmp_name'])) {
+            $response['success'] = true;
+        } else {
+            $response['msg'] = 'Ошибка загрузки файла';
+        }
+
+        return json_encode($response);
+    }
+
+    /**
+     * @return false|string
+     * @throws Throwable
+     * @throws StaleObjectException
+     */
+    public function actionDeleteImage()
+    {
+        $response['msg'] = '';
+        $response['success'] = false;
+
+        if (empty($_POST['id'])) {
+            $response['msg'] = 'Ошибка удаления файла';
+        }
+
+        $model = $this->getFileModel($_POST['id']);
+
+        if (!$model) {
+            $response['msg'] = 'Ошибка удаления файла';
+            return json_encode($response);
+        }
+
+        if ($model->deleteFile()) {
+            $response['success'] = true;
+        } else {
+            $response['msg'] = 'Ошибка удаления файла';
+        }
+
+        return json_encode($response);
+    }
+
+    protected function getFileModel($id)
+    {
+        return TourAttachments::findOne(['id' => $id]);
+    }
+
+    private function checkFile($post, $files): string
+    {
+        $errMsg = '';
+
+        if (empty($post['id'])) {
+            $errMsg = 'Ошибка загрузки файла';
+        }
+
+        if (empty($files['file'])) {
+            $errMsg = 'Ошибка загрузки файла';
+        }
+
+        if (empty($files['file']['name'])) {
+            $errMsg = 'Ошибка загрузки файла';
+        }
+
+        return $errMsg;
+    }
+
 }

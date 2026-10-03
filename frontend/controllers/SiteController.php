@@ -717,5 +717,10 @@ class SiteController extends Controller
         ]);
     }
 
+    public function actionPrivacy()
+    {
+        return $this->render('privacy');
+    }
+
 
 }

@@ -1,3 +1,6 @@
+<?php if ($game->end_text):?>
+    <?php echo $game->end_text;?>
+<?php else: ?>
 <?php foreach ($tourList as $tour): ?>
     <table class="table table-bordered">
         <thead>
@@ -19,3 +22,4 @@
         </tbody>
     </table>
 <?php endforeach; ?>
+<?php endif;?>

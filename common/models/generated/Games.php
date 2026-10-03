@@ -19,9 +19,13 @@ use Yii;
  * @property string|null $url
  * @property int|null $time
  * @property string|null $text
+ * @property string|null $end_text
  *
+ * @property City[] $cities
+ * @property CityGames[] $cityGames
  * @property GameToUser[] $gameToUsers
  * @property QuestGameToUser[] $questGameToUsers
+ * @property QuestGameToUser[] $questGameToUsers0
  * @property StormGameToUser[] $stormGameToUsers
  * @property Tours[] $tours
  */
@@ -44,7 +48,7 @@ class Games extends \yii\db\ActiveRecord
             [['name', 'created_at', 'updated_at'], 'required'],
             [['game_type', 'question_type', 'is_paid', 'price', 'public', 'time'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
-            [['text'], 'string'],
+            [['text', 'end_text'], 'string'],
             [['name', 'url'], 'string', 'max' => 255],
             [['name'], 'unique'],
         ];
@@ -68,7 +72,28 @@ class Games extends \yii\db\ActiveRecord
             'url' => 'Url',
             'time' => 'Time',
             'text' => 'Text',
+            'end_text' => 'End Text',
         ];
+    }
+
+    /**
+     * Gets query for [[Cities]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCities()
+    {
+        return $this->hasMany(City::class, ['id' => 'city_id'])->viaTable('city_games', ['game_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[CityGames]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCityGames()
+    {
+        return $this->hasMany(CityGames::class, ['game_id' => 'id']);
     }
 
     /**
@@ -87,6 +112,16 @@ class Games extends \yii\db\ActiveRecord
      * @return \yii\db\ActiveQuery
      */
     public function getQuestGameToUsers()
+    {
+        return $this->hasMany(QuestGameToUser::class, ['game_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[QuestGameToUsers0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getQuestGameToUsers0()
     {
         return $this->hasMany(QuestGameToUser::class, ['game_id' => 'id']);
     }
