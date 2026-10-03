@@ -287,8 +287,8 @@ class SiteController extends Controller
             return $this->goHome();
         }
 
-        $this->layout = false;
-        return $this->render('signup-pip', [
+        $this->layout = 'without';
+        return $this->render('signup-new', [
             'model' => $model,
         ]);
     }

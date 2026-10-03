@@ -431,7 +431,7 @@
 <footer>
     <div class="container">
         <div class="footer-content">
-            <a href="<?php echo \yii\helpers\Url::to(['/site/feedback'])?>" target="_blank" class="btn btn-primary">Сообщить об ошибке</a>
+            <!--<a href="<?php echo \yii\helpers\Url::to(['/site/feedback'])?>" target="_blank" class="btn btn-primary">Сообщить об ошибке</a>-->
         </div>
     </div>
 </footer>

@@ -616,12 +616,12 @@ $user = Yii::$app->user->identity;
                                     <span><?= Html::encode($user->username ?? 'Пользователь') ?></span>
                                 </button>
                                 <div class="user-menu-dropdown">
-                                    <a href="<?= Url::to(['/site/profile']) ?>">Профиль</a>
-                                    <a href="<?= Url::to(['/site/settings']) ?>">Настройки</a>
-                                    <hr>
                                     <?= Html::beginForm(['/site/logout'], 'post') ?>
                                     <?= Html::hiddenInput(Yii::$app->request->csrfParam, Yii::$app->request->csrfToken) ?>
-                                    <?= Html::submitButton('Выйти', ['style' => 'display:block;width:100%;text-align:left;padding:9px 14px;background:none;border:none;color:#1e293b;border-radius:8px;font-size:14px;cursor:pointer;font-family:inherit;']) ?>
+                                    <?= Html::submitButton('Выйти', [
+                                        'style' => 'display:block;width:100%;text-align:left;padding:9px 14px;background:none;border:none;color:#1e293b;border-radius:8px;font-size:14px;cursor:pointer;font-family:inherit;',
+                                        'onclick' => 'return confirm("Вы точно хотите выйти?")',
+                                    ]) ?>
                                     <?= Html::endForm() ?>
                                 </div>
                             </div>
@@ -647,7 +647,10 @@ $user = Yii::$app->user->identity;
         <footer class="app-footer">
             <div class="container">
                 <div class="footer-content">
-                    <a href="<?php echo \yii\helpers\Url::to(['/site/feedback'])?>" target="_blank" class="btn btn-primary">Сообщить об ошибке</a>
+                    <?php if (!Yii::$app->user->isGuest): ?>
+                        <a href="<?php echo \yii\helpers\Url::to(['/site/feedback'])?>" target="_blank" class="btn btn-primary">Сообщить об ошибке</a>
+                    <?php endif; ?>
+
                 </div>
             </div>
         </footer>

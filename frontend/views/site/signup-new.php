@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Вход в систему</title>
-    <!-- Bootstrap CSS -->
+    <title>Регистрация</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -14,6 +13,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 20px;
+        }
+
+        .nav-link {
+            display: none;
         }
 
         .login-container {
@@ -34,7 +38,7 @@
         .login-logo img {
             max-width: 100%;
             height: auto;
-            max-height: 120px; /* чтоб не расползался, если большой */
+            max-height: 120px;
             object-fit: contain;
         }
 
@@ -73,11 +77,6 @@
             color: #334155;
             font-size: 13px;
             margin-bottom: 4px;
-        }
-
-        .form-check-label {
-            font-size: 14px;
-            color: #475569;
         }
 
         .btn-login {
@@ -140,34 +139,99 @@
         .btn-register:hover {
             background-color: #f8fafc;
             border-color: #cbd5e1;
+            color: #1e293b;
         }
 
-        /* маленькие фиксы для полей ввода */
-        .field-loginform-username,
-        .field-loginform-password {
+        /* поля формы */
+        .field-signupform-username,
+        .field-signupform-email,
+        .field-signupform-phone,
+        .field-signupform-password {
             margin-bottom: 18px;
         }
 
-        /* скрываем стандартные лейблы Yii, если используем свои */
-        .field-loginform-username label,
-        .field-loginform-password label {
+        .field-signupform-username label,
+        .field-signupform-email label,
+        .field-signupform-phone label,
+        .field-signupform-password label {
             font-weight: 500;
             color: #334155;
             font-size: 13px;
             margin-bottom: 4px;
         }
 
-        /* чекбокс "запомнить" */
-        .field-loginform-rememberme {
-            margin-top: 6px;
-            margin-bottom: 6px;
+        /* опциональная пометка у телефона */
+        .label-optional {
+            color: #94a3b8;
+            font-weight: 400;
+            font-size: 12px;
+            margin-left: 4px;
         }
 
-        /* ошибки валидации — аккуратные */
+        /* чекбокс согласия */
+        .field-signupform-agree {
+            margin-top: 6px;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .field-signupform-agree input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            flex-shrink: 0;
+            accent-color: #2563eb;
+            cursor: pointer;
+        }
+
+        .field-signupform-agree label {
+            font-size: 13px;
+            color: #475569;
+            line-height: 1.5;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .field-signupform-agree label a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .field-signupform-agree label a:hover {
+            text-decoration: underline;
+        }
+
+        /* ошибки валидации */
         .help-block {
             font-size: 12px;
             color: #ef4444;
             margin-top: 4px;
+        }
+
+        /* кнопка отправки */
+        .form-group .btn {
+            background-color: #2563eb;
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            padding: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            width: 100%;
+            transition: background 0.2s, box-shadow 0.2s;
+            margin-top: 8px;
+        }
+
+        .form-group .btn:hover {
+            background-color: #1d4ed8;
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.25);
+        }
+
+        .form-group .btn:active {
+            background-color: #1e40af;
         }
     </style>
 </head>
@@ -181,54 +245,68 @@
     </div>
 
     <!-- Заголовок -->
-    <div class="login-title">Добро пожаловать</div>
-    <div class="login-subtitle">Войдите или зарегистрируйтесь чтобы продолжить</div>
+    <div class="login-title">Создать аккаунт</div>
+    <div class="login-subtitle">Заполните форму, чтобы зарегистрироваться</div>
 
     <!-- Форма -->
-    <?php $form = \yii\widgets\ActiveForm::begin([
-        'id' => 'login-form',
-        'options' => ['autocomplete' => 'off']
-    ]); ?>
+    <?php $form = \yii\widgets\ActiveForm::begin(['id' => 'form-signup']); ?>
 
     <?= $form->field($model, 'username')
         ->textInput([
             'autofocus' => true,
-            'placeholder' => 'Введите логин или email'
+            'placeholder' => 'Введите логин',
         ])
         ->label('Логин') ?>
 
+    <?= $form->field($model, 'email')
+        ->textInput([
+            'type' => 'email',
+            'placeholder' => 'your@email.com',
+        ])
+        ->label('Email') ?>
+
+    <?= $form->field($model, 'phone')
+        ->textInput([
+            'type' => 'tel',
+            'placeholder' => '+7 (___) ___-__-__',
+        ])
+        ->label('Телефон <span class="label-optional">(необязательно)</span>', ['encode' => false]) ?>
+
     <?= $form->field($model, 'password')
-        ->passwordInput(['placeholder' => 'Введите пароль'])
+        ->passwordInput([
+            'placeholder' => 'Введите пароль',
+        ])
         ->label('Пароль') ?>
 
-    <?= $form->field($model, 'rememberMe')
-        ->checkbox(['label' => 'Запомнить меня'])
-        ->label(false) // убираем дублирующий лейбл, оставляем только текст чекбокса
-    ?>
+    <?= $form->field($model, 'agree')
+        ->checkbox([
+            'label' => 'Я согласен с <a href="' . \yii\helpers\Url::to(['site/privacy']) . '" target="_blank">политикой обработки персональных данных</a>',
+            'labelOptions' => ['encode' => false, 'required' => true],
+        ])
+        ->label(false) ?>
 
-    <button type="submit" class="btn-login">Войти</button>
+    <div class="form-group">
+        <?= \yii\helpers\Html::submitButton('Зарегистрироваться', [
+            'class' => 'btn',
+            'name' => 'signup-button',
+        ]) ?>
+    </div>
 
     <?php \yii\widgets\ActiveForm::end(); ?>
 
-    <!-- Ссылка "Забыли пароль?" -->
-    <div style="text-align: right; margin-top: 12px;">
-        <a href="#" style="font-size: 13px; color: #2563eb; text-decoration: none;">Забыли пароль?</a>
-    </div>
-
     <div class="divider"></div>
 
-    <!-- Кнопка регистрации -->
-    <a href="<?= \yii\helpers\Url::to(['/site/signup']) ?>" class="btn-register text-center" style="display: block;">
-        Создать аккаунт
+    <!-- Ссылка на вход -->
+    <a href="<?= \yii\helpers\Url::to(['/site/login']) ?>" class="btn-register text-center" style="display: block;">
+        Уже есть аккаунт? Войти
     </a>
 
     <!-- Футер -->
     <div class="login-footer">
-        © 2026 Все права защищены
+        © <?= date('Y') ?> Все права защищены
     </div>
 </div>
 
-<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

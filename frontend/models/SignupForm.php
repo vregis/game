@@ -14,6 +14,8 @@ class SignupForm extends Model
     public $username;
     public $email;
     public $password;
+    public $phone;
+    public $agree;
 
 
     /**
@@ -27,6 +29,8 @@ class SignupForm extends Model
             ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.'],
             ['username', 'string', 'min' => 2, 'max' => 255],
 
+            ['phone', 'trim'],
+
             ['email', 'trim'],
             ['email', 'required'],
             ['email', 'email'],
@@ -35,6 +39,10 @@ class SignupForm extends Model
 
             ['password', 'required'],
             ['password', 'string', 'min' => Yii::$app->params['user.passwordMinLength']],
+
+            ['agree', 'required', 'requiredValue' => 1,
+                'message' => 'Необходимо согласие на обработку персональных данных.'],
+            ['agree', 'boolean'],
         ];
     }
 
@@ -52,6 +60,7 @@ class SignupForm extends Model
         $user = new User();
         $user->username = $this->username;
         $user->email = $this->email;
+        $user->phone = $this->phone;
         $user->setPassword($this->password);
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
